@@ -139,7 +139,22 @@ a.sidebar-link {
     max-width: 100vw;
     width: 100vw;
 }
+.tableHead{
+    width: 60%;
+    margin-bottom: 3%;
+    margin-left: 20%;
+}
+.tableHead img{
+    width: 15%;
+}
+.tableHead th{
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
 
+.tableHead td{
+    font-family: 'Poppins', sans-serif;
+}
 .table td{
     height: 5%;
     font-family: 'Poppins', sans-serif;

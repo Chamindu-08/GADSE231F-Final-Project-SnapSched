@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <?php include 'Includes/DashSideNav.php'; ?>
+        <?php include 'Includes/TeacherSideNav.php'; ?>
             
             <main class="content px-3 py-2">
                 <div class="container-fluid">
@@ -67,17 +67,7 @@
                                                     <label>02/03/2024</label>
                                                 </td>
                                                 <td>
-                                                    <h5>Guardian Name :</h5>
-                                                    <label>Guardian Name</label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <h5>Contact No :</h5>
-                                                    <label>077 12 34 567</label>
-                                                </td>
-                                                <td>
-                                                    <h5>Emergency Contact No :</h5>
                                                     <label>077 12 34 567</label>
                                                 </td>
                                             </tr>

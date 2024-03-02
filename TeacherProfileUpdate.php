@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <?php include 'Includes/DashSideNav.php'; ?>
+        <?php include 'Includes/TeacherSideNav.php'; ?>
 
             
             <main class="content px-3 py-2">
@@ -62,21 +62,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th colspan="2">Guardian Details</th>
-                                    </tr>
-                                    <tr>
                                         <td>
-                                            Guardian Name :<br>
-                                            <input type="text">
-                                        </td>
-                                        <td>
-                                            Guardian contact no :<br>
-                                            <input type="text">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Emergency contact no :<br>
+                                            Contact no :<br>
                                             <input type="text">
                                         </td>
                                     </tr>

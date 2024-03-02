@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <?php include 'Includes/DashSideNav.php'; ?>
+        <?php include 'Includes/TeacherSideNav.php'; ?>
             
             <main class="content px-3 py-2">
                 <div class="container-fluid">
@@ -52,32 +52,32 @@
                                 </thead>
                                 <tbody>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                   <thead class="table-dark">
                                       <tr>
@@ -85,32 +85,32 @@
                                       </tr>
                                   </thead>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                   <tr>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                       <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
                                   </tr>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                   <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
+                                      <td>Class</td>
                                   </tr>
                                 </tbody>
                               </table>
