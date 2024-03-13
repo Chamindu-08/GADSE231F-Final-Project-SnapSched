@@ -40,6 +40,8 @@
 				$_SESSION['userName']=$userName;
 				$_SESSION['password']=$password;
                 
+				setcookie('userName', $studentId, time() + (86400 * 30), "/");
+
                 header("Location: StudentDashBoard.html");
                 exit();
 			}
