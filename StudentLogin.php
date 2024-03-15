@@ -1,54 +1,66 @@
 <?php
-	
-	session_start();
+    // Start session
+    session_start();
 
-	$sname="localhost";
-	$uname="root";
-	$passw="";
-	$dbName="sujathavidyalaya";
+    // Include database connection
+    include 'DBConnection/DBConnection.php';
 
-	$conn=mysqli_connect($sname,$uname,$passw,$dbName);
+    // Check if the connection to the database failed
+    if (!$connection) {
+        echo "Database connection failed. Please try again later.";
+    }
 
-	if (!$conn) {
-		echo "Connection failed";
-	}
+    // Check if username and password are provided via POST request
+    if (isset($_POST['textUserName']) && isset($_POST['textPassword'])) {
 
-	if(isset($_POST['textUserName']) && isset($_POST['textPassword'])){
+        // Function to validate input data
+        function Validate($data) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
 
-		function Validate($data){
-			$data = trim($data);
-			$data = stripslashes($data);
-			$data = htmlspecialchars($data);
-			return $data;
-		}
+        // Validate username and password
+        $userName = Validate($_POST['textUserName']);
+        $password = Validate($_POST['textPassword']);
 
-		$userName = Validate($_POST['textUserName']);
-		$password = Validate($_POST['textPassword']);
+        // Check if username or password is empty
+        if (empty($userName) || empty($password)) {
+            echo "Username and password are required fields.";
+        } else {
+            // Construct SQL query to fetch user details
+            $sql = "SELECT * FROM student WHERE (StudentId='$userName' OR StudentEmail='$userName') AND StudentPassword='$password'";
 
-		if(empty($userName)){
-			echo "error";
-		}
-		else if (empty($password)) {
-			echo "error";
-		}
-		else{
-			$sql="SELECT * FROM tblstudent WHERE StudentEmail='$userName' AND StudentPassword='$password'";
+            // Execute the query
+            $result = mysqli_query($connection, $sql);
 
-			$result = mysqli_query($conn,$sql);
-
-			if (mysqli_num_rows($result)==1) {
-				$_SESSION['userName']=$userName;
-				$_SESSION['password']=$password;
+            // Check if exactly one row is returned
+            if (mysqli_num_rows($result) == 1) {
+                // Fetch the row
+                $row = mysqli_fetch_assoc($result);
                 
-				setcookie('userName', $studentId, time() + (86400 * 30), "/");
+                // Store user details in session variables
+                $_SESSION['userName'] = $row['StudentEmail'];
+                $_SESSION['password'] = $password;
 
-                header("Location: StudentDashBoard.html");
+                // Set cookies for StudentId and Grade (expire in 30 minutes)
+                setcookie('studentId', $row['StudentId'], time() + (30 * 60), "/"); 
+                setcookie('studentGrade', $row['Grade'], time() + (30 * 60), "/"); 
+
+                // Redirect to student dashboard
+                header("Location: StudentDashboard.php");
                 exit();
-			}
-		}
-	}
-	else{
-		echo "error";
-	}
+            } else {
+                // If no or more than one row is returned, display error
+                echo "Invalid username or password.";
+            }
+        }
+    } else {
+        // If username or password is not provided via POST request, display error
+        echo "Username and password are required fields.";
+    }
 
+    // Close the database connection
+    mysqli_close($connection);
 ?>

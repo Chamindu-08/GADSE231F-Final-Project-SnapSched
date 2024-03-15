@@ -43,12 +43,12 @@
                             include 'DBConnection/DBConnection.php';
 
                             // Check connection
-                            if ($connection->connect_error) {
-                                die("Connection failed: " . $connection->connect_error);
+                            if (!$connection) {
+                                echo "Connection failed";
                             }
 
                             // Check if the grade cookie is set
-                         /*  if (isset($_COOKIE['grade'])) {
+                        /*    if (isset($_COOKIE['grade'])) {
                                 // Grade is available, you can use it wherever needed
                                 $grade = $_COOKIE['grade'];
                                 // Proceed with your logic here
@@ -65,10 +65,10 @@
                                     INNER JOIN teaching ON subjects.SubjectId = teaching.SubjectId 
                                     WHERE teaching.Grade = $grade AND teaching.TeachingYear = YEAR(CURDATE())";
 
-                            $result = $connection->query($sql);
+                            $result = mysqli_query($connection,$sql);
                         
                             // Output data
-                            if ($result->num_rows > 0) {
+                            if (mysqli_num_rows($result) > 0) {
                                 // Initialize array to store subjects by day of week
                                 $subjectsByDay = array(
                                     'Monday' => array(),
@@ -79,7 +79,7 @@
                                 );
                             
                                 // Store subjects in the array by day of week
-                                while ($row = $result->fetch_assoc()) {
+                                while ($row = mysqli_fetch_assoc($result)) {
                                     $subjectsByDay[$row['DayOfWeek']][] = $row['SubjectName'];
                                 }
 
@@ -132,7 +132,8 @@
                                 echo "No subjects found for this grade and year.";
                             }
                         
-                            $connection->close();
+                            // Close the database connection
+                            mysqli_close($connection);
                         ?>
                         </div>
                     </div>

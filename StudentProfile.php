@@ -3,8 +3,8 @@
 include 'DBConnection/DBConnection.php';
 
 // Check connection
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
+if (!$connection) {
+    echo "Connection failed";
 }
 
 // Initialize variables to store retrieved values
@@ -37,7 +37,7 @@ $studentId = "DSE231F-57";
 // SQL query to retrieve student information
 $sql = "SELECT student.StudentId,student.FirstName,student.LastName,student.SurName,student.StudentAddress,student.DOB,student.AdmissionDate,student.StudentEmail,student.StudentPassword,student.Grade,currentStudent.GuardianName,currentStudent.GuardianContactNo,currentStudent.EmergencyContactNo FROM student INNER JOIN currentStudent ON student.StudentId = currentStudent.StudentId WHERE student.StudentId = '$studentId'";
 
-$result = $connection->query($sql);
+$result = mysqli_query($connection,$sql);
 
 if ($result === false) {
     die("Error executing the query: " . $connection->error);
@@ -62,7 +62,8 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-$connection->close();
+// Close the database connection
+mysqli_close($connection);
 ?>
 
 <!DOCTYPE html>
