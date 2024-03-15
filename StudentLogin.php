@@ -44,9 +44,11 @@
                 $_SESSION['userName'] = $row['StudentEmail'];
                 $_SESSION['password'] = $password;
 
-                // Set cookies for StudentId and Grade (expire in 30 minutes)
-                setcookie('studentId', $row['StudentId'], time() + (30 * 60), "/"); 
-                setcookie('studentGrade', $row['Grade'], time() + (30 * 60), "/"); 
+                // Fetch the student ID from the row
+                $studentId = $row['StudentId'];
+
+                // Set cookie for StudentId (expire in 30 minutes)
+                setcookie('studentId', $studentId, time() + (30 * 60), "/"); 
 
                 // Redirect to student dashboard
                 header("Location: StudentDashboard.php");
