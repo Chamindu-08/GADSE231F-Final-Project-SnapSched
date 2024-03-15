@@ -22,15 +22,15 @@ $emergency_contact_no = "";
 $password = "";
 
 // Check if the cookie is set
-/*if (isset($_COOKIE['studentId'])) {
+/* if (isset($_COOKIE['studentId'])) {
     // Student ID is available, you can use it wherever needed
     $studentId = $_COOKIE['studentId'];
     // Proceed with your logic here
 } else {
     // Student ID cookie is not set, handle unauthorized access
-    header('Location: login.php');
+    header('Location: StudentLogin.html');
     exit();
-}*/
+} */
 
 $studentId = "DSE231F-57";
 

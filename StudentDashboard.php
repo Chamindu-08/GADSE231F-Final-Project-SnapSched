@@ -1,3 +1,16 @@
+<?php
+    // Check if the grade cookie is set
+  /*  if (isset($_COOKIE['grade'])) {
+        // Grade is available, you can use it wherever needed
+        $grade = $_COOKIE['grade'];
+        // Proceed with your logic here
+    } else {
+        // Grade cookie is not set, handle unauthorized access
+        header('Location: StudentLogin.html');
+        exit();
+    } */
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,122 +21,142 @@
     <!-- stylesheet -->
     <link rel="stylesheet" href="CSS/Dashboard.css" />
     <link rel="stylesheet" href="CSS/style.css" />
-    <!-- Bootstap link -->
+    <!-- Bootstrap link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="wrapper">
         <?php include 'Includes/DashSideNav.php'; ?>
             
-            <main class="content px-3 py-2">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="card flex-fill border-0 illustration">
-                            <div class="card-body p-0 d-flex flex-fill">
-                                <div class="row g-0 w-100">
-                                    <div class="col">
-                                        <div class="p-3 m-1">
-                                            <h4>Upcomming Events</h4>
-                                            <p class="mb-0">There are no upcoming events</p>
-                                        </div>
+        <main class="content px-3 py-2">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="card flex-fill border-0 illustration">
+                        <div class="card-body p-0 d-flex flex-fill">
+                            <div class="row g-0 w-100">
+                                <div class="col">
+                                    <div class="p-3 m-1">
+                                        <h4>Upcoming Events</h4>
+                                        <p class="mb-0">There are no upcoming events</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Table Element -->
-                    <div class="card border-0">
-                        <div class="card-header">
-                            <h4 class="card-title">
-                                Time Table
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <table class="table">
-                                <thead class="table-dark">
-                                  <tr>
-                                    <th>Monday</th>
-                                    <th>Tuesday</th>
-                                    <th>Wednesday</th>
-                                    <th>Thursday</th>
-                                    <th>Friday</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <thead class="table-dark">
-                                      <tr>
-                                        <th colspan="5" class="table-success interval">INTERVAL</th>
-                                      </tr>
-                                  </thead>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                      <td>Subject</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                        </div>
+                </div>
+                
+                <!-- Table Element -->
+                <div class="card border-0">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Time Table
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            //get database connection
+                            include 'DBConnection/DBConnection.php';
+
+                            // Check connection
+                            if ($connection->connect_error) {
+                                die("Connection failed: " . $connection->connect_error);
+                            }
+
+                            // Check if the grade cookie is set
+                        /*    if (isset($_COOKIE['grade'])) {
+                                // Grade is available, you can use it wherever needed
+                                $grade = $_COOKIE['grade'];
+                                // Proceed with your logic here
+                            } else {
+                                // Grade cookie is not set, handle unauthorized access
+                                header('Location: StudentLogin.html');
+                                exit();
+                            } */
+
+                            $grade = 6;
+                            // SQL query
+                            $sql = "SELECT subjects.SubjectName, teaching.DayOfWeek
+                                    FROM subjects 
+                                    INNER JOIN teaching ON subjects.SubjectId = teaching.SubjectId 
+                                    WHERE teaching.Grade = $grade AND teaching.TeachingYear = YEAR(CURDATE())";
+
+                            $result = $connection->query($sql);
+                        
+                            // Output data
+                            if ($result->num_rows > 0) {
+                                // Initialize array to store subjects by day of week
+                                $subjectsByDay = array(
+                                    'Monday' => array(),
+                                    'Tuesday' => array(),
+                                    'Wednesday' => array(),
+                                    'Thursday' => array(),
+                                    'Friday' => array()
+                                );
+                            
+                                // Store subjects in the array by day of week
+                                while ($row = $result->fetch_assoc()) {
+                                    $subjectsByDay[$row['DayOfWeek']][] = $row['SubjectName'];
+                                }
+
+                                // Start the table
+                                echo "<table class='table'>";
+                                echo "<thead class='table-dark'>";
+                                echo "<tr>";
+                                echo "<th>Monday</th>";
+                                echo "<th>Tuesday</th>";
+                                echo "<th>Wednesday</th>";
+                                echo "<th>Thursday</th>";
+                                echo "<th>Friday</th>";
+                                echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+
+                                // Determine the maximum number of subjects for any day
+                                $maxSubjects = max(array_map('count', $subjectsByDay));
+                                $rowCount = 0; // Initialize row count
+
+                                // Output data for each row
+                                for ($i = 0; $i < $maxSubjects; $i++) {
+                                    echo "<tr>";
+
+                                    // Output subjects for each day
+                                    foreach ($subjectsByDay as $day => $subjects) {
+                                        echo "<td>";
+                                        if (isset($subjects[$i])) {
+                                            echo $subjects[$i];
+                                        }
+                                        echo "</td>";
+                                    }
+
+                                    echo "</tr>";
+
+                                    // Increment row count
+                                    $rowCount++;
+
+                                    // Add an interval row after every 4 rows filled
+                                    if ($rowCount % 4 == 0 && $i < $maxSubjects - 1) {
+                                        echo "<tr><th colspan='5' class='table-success interval'>INTERVAL</th></tr>";
+                                    }
+                                }
+                            
+                                // End the table
+                                echo "</tbody>";
+                                echo "</table>";
+                            } else {
+                                // If no results found
+                                echo "No subjects found for this grade and year.";
+                            }
+                        
+                            $connection->close();
+                        ?>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
-
     <script src="JS/Dashboard.js"></script>
-    <!-- link Bootstap -->
+    <!-- Bootstrap script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
