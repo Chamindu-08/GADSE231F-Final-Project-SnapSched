@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: StudentLogin.html');
         exit();
     } */
-
+    $studentId = "DSE231F-57";
 $sql = "SELECT * FROM student INNER JOIN currentStudent ON student.StudentId = currentStudent.StudentId WHERE student.StudentId='$studentId'";
 
 $result = mysqli_query($connection, $sql);
