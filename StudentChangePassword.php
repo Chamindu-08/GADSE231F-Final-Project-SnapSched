@@ -19,8 +19,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($currentPassword)) {
             echo "<script>alert('Current Password is required.');</script>";
         } else {
-            // Retrieve student ID from cookies or session or wherever you store it
-            $studentId = "DSE231F-57"; // Placeholder, replace it with your actual method of getting student ID
+
+            // Check if the cookie is set
+            if (isset($_COOKIE['studentId'])) {
+                // Student ID is available, you can use it wherever needed
+                $studentId = $_COOKIE['studentId'];
+                // Proceed with your logic here
+            } else {
+                // Student ID cookie is not set, handle unauthorized access
+                header('Location: StudentLogin.html');
+                exit();
+            }
 
             // Verify current password
             $sqlVerifyPassword = "SELECT StudentPassword FROM student WHERE StudentId='$studentId'";

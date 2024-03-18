@@ -1,3 +1,61 @@
+<?php
+//get database connection
+include 'DBConnection/DBConnection.php';
+
+// Check connection
+if (!$connection) {
+    echo "Connection failed";
+}
+
+// Initialize variables to store retrieved values
+$first_name = "";
+$last_name = "";
+$sure_name = "";
+$admission_no = "";
+$assume_date = "";
+$address = "";
+$email = "";
+$contact_no = "";
+$password = "";
+
+// Check if the cookie is set
+if(isset($_COOKIE['teacherEmail'])){
+    $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
+} else {
+    // Student ID cookie is not set, handle unauthorized access
+    header('Location: TeacherLogin.html');
+    exit();
+}
+
+// SQL query to retrieve student information
+$sql = "SELECT * FROM teacher WHERE TeacherEmail= '$teacherEmail'";
+
+$result = mysqli_query($connection,$sql);
+
+if ($result === false) {
+    die("Error executing the query: " . $connection->error);
+}
+
+if ($result->num_rows > 0) {
+    // output data of the first row (assuming only one student is retrieved)
+    $row = $result->fetch_assoc();
+    $first_name = $row["FirstName"];
+    $last_name = $row["LastName"];
+    $sure_name = $row["SurName"];
+    $admission_no = $row["TeacherId"];
+    $assume_date = $row["AssumeDate"];
+    $address = $row["TeacherAddress"];
+    $email = $row["TeacherEmail"];
+    $contact_no = $row["TeacherContactNo"];
+    $password = $row["TeacherPassword"];
+} else {
+    echo "0 results";
+}
+
+// Close the database connection
+mysqli_close($connection);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +94,8 @@
                                 <div class="card-body p-0 d-flex flex-fill">
                                     <div class="row g-0 w-100 center-content">
                                         <img src="Images/user1.png">
-                                        <h4>First and Last Name</h4>
-                                        <h6>Sure Name</h6>
+                                        <h4><?php echo $first_name . ' ' . $last_name; ?></h4>
+                                        <h6><?php echo $sure_name; ?></h6>
                                     </div>
                                 </div>
                             </div>
@@ -50,37 +108,31 @@
                                             <tr>
                                                 <td>
                                                     <h5>Admission No :</h5>
-                                                    <label>6565</label>
+                                                    <label><?php echo $admission_no; ?></label>
                                                 </td>
                                                 <td>
-                                                    <h5>Admission Date :</h5>
-                                                    <label>02/03/2024</label>
+                                                    <h5>Assume Date :</h5>
+                                                    <label><?php echo $assume_date; ?></label>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <h5>Address :</h5>
-                                                    <label>Galle, Sri Lanka</label>
+                                                    <label><?php echo $address; ?></label>
                                                 </td>
                                                 <td>
                                                     <h5>Email :</h5>
-                                                    <label>snapsched@gmail.com</label>
+                                                    <label><?php echo $email; ?></label>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <h5>Date of birth :</h5>
-                                                    <label>02/03/2024</label>
-                                                </td>
                                                 <td>
                                                     <h5>Contact No :</h5>
-                                                    <label>077 12 34 567</label>
+                                                    <label><?php echo $contact_no; ?></label>
                                                 </td>
-                                            </tr>
-                                            <tr>
                                                 <td>
                                                     <h5>Password :</h5>
-                                                    <label>XXXXXXXXXX</label>
+                                                    <label><?php echo $password; ?></label>
                                                 </td>
                                             </tr>
                                             <tr>

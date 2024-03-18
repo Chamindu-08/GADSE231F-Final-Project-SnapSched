@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirmPassword = $_POST['confirmPassword'];
     
     // Check if the cookie is set
-    /* if (isset($_COOKIE['studentId'])) {  
+    if (isset($_COOKIE['studentId'])) {  
         // Student ID is available, you can use it wherever needed
         $studentId = $_COOKIE['studentId'];
         // Proceed with your logic here
@@ -32,9 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Student ID cookie is not set, handle unauthorized access
         header('Location: StudentLogin.html');
         exit();
-    } */
+    }
 
-    $studentId = "DSE231F-57";
     // Check if newPassword or confirmPassword is empty and currentPassword is not empty
     if (!empty($newPassword) || !empty($confirmPassword)) {
         if (empty($currentPassword)) {
@@ -93,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Check if the cookie is set
-/*  if (isset($_COOKIE['studentId'])) {  
+    if (isset($_COOKIE['studentId'])) {  
         // Student ID is available, you can use it wherever needed
         $studentId = $_COOKIE['studentId'];
         // Proceed with your logic here
@@ -101,8 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Student ID cookie is not set, handle unauthorized access
         header('Location: StudentLogin.html');
         exit();
-    } */
-    $studentId = "DSE231F-57";
+    }
+
 $sql = "SELECT * FROM student INNER JOIN currentStudent ON student.StudentId = currentStudent.StudentId WHERE student.StudentId='$studentId'";
 
 $result = mysqli_query($connection, $sql);

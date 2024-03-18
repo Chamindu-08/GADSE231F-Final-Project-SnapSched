@@ -22,7 +22,7 @@ $emergency_contact_no = "";
 $password = "";
 
 // Check if the cookie is set
-/* if (isset($_COOKIE['studentId'])) {
+if (isset($_COOKIE['studentId'])) {
     // Student ID is available, you can use it wherever needed
     $studentId = $_COOKIE['studentId'];
     // Proceed with your logic here
@@ -30,9 +30,7 @@ $password = "";
     // Student ID cookie is not set, handle unauthorized access
     header('Location: StudentLogin.html');
     exit();
-} */
-
-$studentId = "DSE231F-57";
+}
 
 // SQL query to retrieve student information
 $sql = "SELECT student.StudentId,student.FirstName,student.LastName,student.SurName,student.StudentAddress,student.DOB,student.AdmissionDate,student.StudentEmail,student.StudentPassword,student.Grade,currentStudent.GuardianName,currentStudent.GuardianContactNo,currentStudent.EmergencyContactNo FROM student INNER JOIN currentStudent ON student.StudentId = currentStudent.StudentId WHERE student.StudentId = '$studentId'";
