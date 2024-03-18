@@ -16,13 +16,22 @@
 
 <body>
 
+  <script>
+    function studentLogin(){
+      window.location.href = "StudentLogin.html";
+    }
+    function teacherLogin(){
+      window.location.href = "TeacherLogin.html";
+    }
+  </script>
+
     <!-- nav bar -->
   <nav class="navbar navbar-expand-sm fixed-top justify-content-center" id="subNavBar">
     <div class="container">
         <p class="title1">Proudly Celebrating It's 78th Anniversary...</p>
         <div class="ml-auto">
-            <button class="btnStyle mx-2" type="button">Student</button>
-            <button class="btnStyle mx-2" type="button">Teacher</button>
+          <button onclick="studentLogin()" class="btnStyle mx-2" type="button">Student</button>
+          <button onclick="teacherLogin()" class="btnStyle mx-2" type="button">Teacher</button>
         </div>
     </div>
   </nav>

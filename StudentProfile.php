@@ -80,6 +80,13 @@ mysqli_close($connection);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+<script>
+    function studentProUpdate(){
+      window.location.href = "StudentProfileUpdate.php";
+    }
+  </script>
+
     <div class="wrapper">
         <?php include 'Includes/DashSideNav.php'; ?>
             
@@ -157,7 +164,7 @@ mysqli_close($connection);
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <button class="btnStyle1">UPDATE</button>
+                                                    <button type="button" onclick="studentProUpdate()" class="btnStyle1" >UPDATE</button>
                                                 </td>
                                             </tr>
                                         </table>
