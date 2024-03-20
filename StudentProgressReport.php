@@ -74,110 +74,129 @@
                 <!-- Table Element -->
                 <div class="card border-0">
                     <div class="card-body">
-                        <table class="tableHead">
-                            <tr>
-                                <th colspan="2"><img src="Images/Logo.jpg"></th>
-                            </tr>
-                            <tr>
-                                <th colspan="2">Sri Indasara Vidyalaya</th>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Name : <?php echo isset($fullName) ? $fullName : ""; ?></td>
-                            </tr>
-                            <tr>
-                                <td>School year : <?php echo isset($selectedYear) ? $selectedYear : ""; ?></td>
-                                <td>Grade : <?php echo isset($grade) ? $grade : ""; ?></td>
-                            </tr>
+                        <?php
+                        // Check if form is submitted
+                        if (isset($_POST['submit'])) {
+                            // Initialize variables
+                            $fullName = "";
+                            $selectedYear = "";
+                            $grade = "";
 
-                        </table>
-                        <table class="table" id="progressTable">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th style="width: 25%;">Subject Name</th>
-                                    <th style="width: 15%;">1st term Mark</th>
-                                    <th style="width: 15%;">2nd term Mark</th>
-                                    <th style="width: 15%;">3rd term Mark</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // Initialize variables
-                                $fullName = "";
-                                $selectedYear = "";
-                                $grade = "";
+                            // Retrieve selected year from form
+                            $selectedYear = $_POST['year'];
 
-                                if (isset($_POST['submit'])) {
-                                    $selectedYear = $_POST['year'];
+                            // Re-establish database connection
+                            include 'DBConnection/DBConnection.php';
 
-                                    // Re-establish database connection
-                                    include 'DBConnection/DBConnection.php';
+                            // Check if the cookie is set
+                            if (isset($_COOKIE['studentId'])) {
+                                // Student ID is available, you can use it wherever needed
+                                $studentId = $_COOKIE['studentId'];
+                                // Proceed with your logic here
+                            } else {
+                                // Student ID cookie is not set, handle unauthorized access
+                                echo "<script>alert('Your session has timed out. Please log in again.');</script>";
+                                header('Location: StudentLogin.html');
+                                exit();
+                            }
 
-                                    // Fetch student information
-                                    $studentID = "DSE231F-57";
-                                    $studentSql = "SELECT CONCAT(FirstName, ' ', LastName) AS FullName, Grade 
-                                                   FROM student 
-                                                   WHERE StudentId = 'DSE231F-57'"; // Replace 'DSE231F-57' with the appropriate student ID
-                                    $studentResult = mysqli_query($connection, $studentSql);
+                            // Fetch student information
+                            $studentSql = "SELECT CONCAT(FirstName, ' ', LastName) AS FullName, Grade 
+                                           FROM student 
+                                           WHERE StudentId = '$studentId'";
+                            $studentResult = mysqli_query($connection, $studentSql);
 
-                                    if ($studentResult) {
-                                        $studentRow = mysqli_fetch_assoc($studentResult);
-                                        $fullName = $studentRow['FullName'];
-                                        $grade = $studentRow['Grade'];
-                                    } else {
-                                        echo "Error fetching student information: " . mysqli_error($connection);
-                                    }
+                            if ($studentResult) {
+                                $studentRow = mysqli_fetch_assoc($studentResult);
+                                $fullName = $studentRow['FullName'];
+                                $grade = $studentRow['Grade'];
 
-                                    // Query to retrieve subject marks based on the selected year
-                                    $marksSql = "SELECT s.SubjectName, m.Term, m.Mark
-                                                 FROM marks m
-                                                 JOIN subjects s ON m.SubjectId = s.SubjectId
-                                                 WHERE m.MarkOfYear = $selectedYear
-                                                 ORDER BY s.SubjectName, m.Term";
+                                // Display student details
+                                echo '<table class="tableHead">';
+                                echo '<tr><th colspan="2"><img src="Images/Logo.jpg"></th></tr>';
+                                echo '<tr><th colspan="2">Sri Indasara Vidyalaya</th></tr>';
+                                echo '<tr><td colspan="2">Name : ' . $fullName . '</td></tr>';
+                                echo '<tr><td>School year : ' . $selectedYear . '</td><td>Grade : ' . $grade . '</td></tr>';
+                                echo '</table>';
 
-                                    $result = mysqli_query($connection, $marksSql);
+                                // Query to retrieve subject marks based on the selected year
+                                $marksSql = "SELECT s.SubjectName, m.Term, m.Mark
+                                             FROM marks m
+                                             JOIN subjects s ON m.SubjectId = s.SubjectId
+                                             WHERE m.MarkOfYear = '$selectedYear' AND m.StudentId = '$studentId'
+                                             ORDER BY s.SubjectName, m.Term";
 
-                                    if ($result) {
-                                        $currentSubject = null;
-                                        $marks = ['1st term Mark' => '', '2nd term Mark' => '', '3rd term Mark' => ''];
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            if ($row['SubjectName'] !== $currentSubject) {
-                                                if (!is_null($currentSubject)) {
-                                                    echo "<tr>";
-                                                    foreach ($marks as $mark) {
-                                                        echo "<td>" . $mark . "</td>";
+                                $result = mysqli_query($connection, $marksSql);
+
+                                // Display progress report table
+                                if ($result) {
+                                    echo '<table class="table" id="progressTable">';
+                                    echo '<thead class="table-dark">';
+                                    echo '<tr>';
+                                    echo '<th style="width: 25%;">Subject Name</th>';
+                                    echo '<th style="width: 15%;">1st term Mark</th>';
+                                    echo '<th style="width: 15%;">2nd term Mark</th>';
+                                    echo '<th style="width: 15%;">3rd term Mark</th>';
+                                    echo '</tr>';
+                                    echo '</thead>';
+                                    echo '<tbody>';
+
+                                    $currentSubject = null;
+                                    $marks = ['1st term Mark' => '', '2nd term Mark' => '', '3rd term Mark' => ''];
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        if ($row['SubjectName'] !== $currentSubject) {
+                                            if (!is_null($currentSubject)) {
+                                                // Print marks for the previous subject from the 4th column onwards
+                                                echo '<tr>';
+                                                $i = 0;
+                                                foreach ($marks as $key => $mark) {
+                                                    $i++;
+                                                    if ($i > 2) {
+                                                        echo '<td style="width: 15%;">' . ($mark === '' ? '' : $mark) . '</td>';
                                                     }
-                                                    echo "</tr>";
                                                 }
-                                                $currentSubject = $row['SubjectName'];
-                                                $marks = ['1st term Mark' => '', '2nd term Mark' => '', '3rd term Mark' => ''];
-                                                echo "<tr><td>" . $currentSubject . "</td>";
+                                                echo '</tr>';
                                             }
-                                            $marks[$row['Term']] = $row['Mark'];
+                                            // Reset marks array for the new subject
+                                            $currentSubject = $row['SubjectName'];
+                                            $marks = ['1st term Mark' => '', '2nd term Mark' => '', '3rd term Mark' => ''];
+                                            echo '<tr><td>' . $currentSubject . '</td>';
                                         }
-                                        echo "<tr>";
-                                        foreach ($marks as $mark) {
-                                            echo "<td>" . $mark . "</td>";
-                                        }
-                                        echo "</tr>";
-                                    } else {
-                                        echo "Error fetching subject marks: " . mysqli_error($connection);
+                                        // Store mark in corresponding term slot
+                                        $marks[$row['Term']] = $row['Mark'];
                                     }
-
-                                    // Close the database connection
-                                    mysqli_close($connection);
+                                    // Print marks for the last subject from the 4th column onwards
+                                    echo '<tr>';
+                                    $i = 0;
+                                    foreach ($marks as $key => $mark) {
+                                        $i++;
+                                       
+                                        if ($i > 2) {
+                                            echo '<td style="width: 15%;">' . ($mark === '' ? '' : $mark) . '</td>';
+                                        }
+                                    }
+                                    echo '</tr>';
+                                    echo '</tbody>';
+                                    echo '</table>';
+                                } else {
+                                    echo 'Error fetching subject marks: ' . mysqli_error($connection);
                                 }
-                                ?>
-                            </tbody>
-                        </table>
+                            } else {
+                                echo 'Error fetching student information: ' . mysqli_error($connection);
+                            }
+
+                            // Close the database connection
+                            mysqli_close($connection);
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-</div>
 
-<script src="js/Dashboard.js"></script>
-<!-- Bootstrap script -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/Dashboard.js"></script>
+    <!-- Bootstrap script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Proceed with your logic here
     } else {
         // Student ID cookie is not set, handle unauthorized access
+        echo "<script>alert('Your session has timed out. Please log in again.');</script>";
         header('Location: StudentLogin.html');
         exit();
     }
@@ -91,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Check if the cookie is set
+    // Check if the cookie is set
     if (isset($_COOKIE['studentId'])) {  
         // Student ID is available, you can use it wherever needed
         $studentId = $_COOKIE['studentId'];

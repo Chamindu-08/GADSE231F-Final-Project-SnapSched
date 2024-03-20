@@ -1,14 +1,15 @@
 <?php
     // Check if the grade cookie is set
-  /* if (isset($_COOKIE['grade'])) {
+   if (isset($_COOKIE['grade'])) {
         // Grade is available, you can use it wherever needed
         $grade = $_COOKIE['grade'];
         // Proceed with your logic here
     } else {
         // Grade cookie is not set, handle unauthorized access
+        echo "<script>alert('Your session has timed out. Please log in again.');</script>";
         header('Location: StudentLogin.html');
         exit();
-    } */
+    }
 ?>
 
 <!DOCTYPE html>
@@ -48,17 +49,17 @@
                             }
 
                             // Check if the grade cookie is set
-                        /*    if (isset($_COOKIE['grade'])) {
+                            if (isset($_COOKIE['grade'])) {
                                 // Grade is available, you can use it wherever needed
                                 $grade = $_COOKIE['grade'];
                                 // Proceed with your logic here
                             } else {
                                 // Grade cookie is not set, handle unauthorized access
+                                echo "<script>alert('Your session has timed out. Please log in again.');</script>";
                                 header('Location: StudentLogin.html');
                                 exit();
-                            } */
+                            }
 
-                            $grade = 6;
                             // SQL query
                             $sql = "SELECT subjects.SubjectName, teaching.DayOfWeek
                                     FROM subjects 

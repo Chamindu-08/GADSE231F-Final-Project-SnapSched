@@ -28,6 +28,7 @@ if (isset($_COOKIE['studentId'])) {
     // Proceed with your logic here
 } else {
     // Student ID cookie is not set, handle unauthorized access
+    echo "<script>alert('Your session has timed out. Please log in again.');</script>";
     header('Location: StudentLogin.html');
     exit();
 }
