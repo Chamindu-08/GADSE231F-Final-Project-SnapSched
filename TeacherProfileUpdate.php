@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
     } else {
         // Teacher email cookie is not set, handle unauthorized access
+        echo "<script>alert('Your session has timed out. Please log in again.');</script>";
         header('Location: TeacherLogin.html');
         exit();
     }
@@ -84,6 +85,7 @@ if (isset($_COOKIE['teacherEmail'])) {
     // Proceed with your logic here
 } else {
     //teacherEmail cookie is not set, handle unauthorized access
+    echo "<script>alert('Your session has timed out. Please log in again.');</script>";
     header('Location: TeacherLogin.html');
     exit();
 }

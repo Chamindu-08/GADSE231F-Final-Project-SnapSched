@@ -26,6 +26,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="TeacherViewSProgrssReport.php" class="sidebar-link" data-bs-target="#posts" aria-expanded="false">
+                            <img src="Images/table-calendar.png" style="width:15px;">
+                            Students Progress Report
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
                             aria-expanded="false"><img src="Images/paper.png" style="width:15px;">
                             Marks
@@ -36,9 +42,6 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="TeacherMarksUpdate.php" class="sidebar-link">Update Marks</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="TeacherMarksRemove.php" class="sidebar-link">Remove Marks</a>
                             </li>
                         </ul>
                     </li>
