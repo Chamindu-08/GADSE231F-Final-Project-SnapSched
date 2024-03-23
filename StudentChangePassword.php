@@ -19,12 +19,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($currentPassword)) {
             echo "<script>alert('Current Password is required.');</script>";
         } else {
-            //check if the cookie is set
-            if (isset($_COOKIE['studentId'])) {
-                $studentId = $_COOKIE['studentId'];
+            
+            // Check if the cookie is set
+            if(isset($_COOKIE['studentId'])){
+                $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
             } else {
-                echo "<script>alert('Your session has timed out. Please log in again.');</script>";
-                header('Location: StudentLogin.html');
+                // Redirect to login page after displaying a message
+                echo '<script>
+                        var confirmMsg = confirm("Your session has timed out. Please log in again.");
+                        if (confirmMsg) {
+                            window.location.href = "StudentLogin.html";
+                        }
+                    </script>';
                 exit();
             }
 

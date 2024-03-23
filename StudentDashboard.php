@@ -63,15 +63,17 @@
                                 echo "Connection failed";
                             }
 
-                            // Check if the grade cookie is set
-                            if (isset($_COOKIE['grade'])) {
-                                // Grade is available, you can use it wherever needed
-                                $grade = $_COOKIE['grade'];
-                                // Proceed with your logic here
+                            // Check if the cookie is set
+                            if(isset($_COOKIE['grade'])){
+                                $grade = $_COOKIE['grade']; // Retrieving teacherEmail from cookie
                             } else {
-                                // Grade cookie is not set, handle unauthorized access
-                                echo "<script>alert('Your session has timed out. Please log in again.');</script>";
-                                header('Location: StudentLogin.html');
+                                // Redirect to login page after displaying a message
+                                echo '<script>
+                                        var confirmMsg = confirm("Your session has timed out. Please log in again.");
+                                        if (confirmMsg) {
+                                            window.location.href = "StudentLogin.html";
+                                        }
+                                    </script>';
                                 exit();
                             }
 

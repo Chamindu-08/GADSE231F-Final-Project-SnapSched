@@ -22,16 +22,19 @@ $emergency_contact_no = "";
 $password = "";
 
 // Check if the cookie is set
-if (isset($_COOKIE['studentId'])) {
-    // Student ID is available, you can use it wherever needed
-    $studentId = $_COOKIE['studentId'];
-    // Proceed with your logic here
+if(isset($_COOKIE['studentId'])){
+    $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
 } else {
-    // Student ID cookie is not set, handle unauthorized access
-    echo "<script>alert('Your session has timed out. Please log in again.');</script>";
-    header('Location: StudentLogin.html');
+    // Redirect to login page after displaying a message
+    echo '<script>
+            var confirmMsg = confirm("Your session has timed out. Please log in again.");
+            if (confirmMsg) {
+                window.location.href = "StudentLogin.html";
+            }
+        </script>';
     exit();
 }
+
 
 // SQL query to retrieve student information
 $sql = "SELECT student.StudentId,student.FirstName,student.LastName,student.SurName,student.StudentAddress,student.DOB,student.AdmissionDate,student.StudentEmail,student.StudentPassword,student.Grade,currentStudent.GuardianName,currentStudent.GuardianContactNo,currentStudent.EmergencyContactNo FROM student INNER JOIN currentStudent ON student.StudentId = currentStudent.StudentId WHERE student.StudentId = '$studentId'";

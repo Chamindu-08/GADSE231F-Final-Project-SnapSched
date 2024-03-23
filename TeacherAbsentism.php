@@ -20,9 +20,13 @@ if(isset($_POST["date"])) {
         if(isset($_COOKIE['teacherId'])){
             $TeacherId = $_COOKIE['teacherId']; // Retrieving teacherEmail from cookie
         } else {
-            // Teacher ID cookie is not set, handle unauthorized access
-            echo "<script>alert('Your session has timed out. Please log in again.');</script>";
-            header('Location: TeacherLogin.html');
+            // Redirect to login page after displaying a message
+            echo '<script>
+                    var confirmMsg = confirm("Your session has timed out. Please log in again.");
+                    if (confirmMsg) {
+                        window.location.href = "TeacherLogin.html";
+                    }
+                  </script>';
             exit();
         }
 

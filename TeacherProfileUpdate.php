@@ -22,11 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Check if the cookie is set
     if(isset($_COOKIE['teacherEmail'])){
-            $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
+        $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
     } else {
-        // Teacher email cookie is not set, handle unauthorized access
-        echo "<script>alert('Your session has timed out. Please log in again.');</script>";
-        header('Location: TeacherLogin.html');
+        // Redirect to login page after displaying a message
+        echo '<script>
+                var confirmMsg = confirm("Your session has timed out. Please log in again.");
+                if (confirmMsg) {
+                    window.location.href = "TeacherLogin.html";
+                }
+              </script>';
         exit();
     }
 
@@ -79,14 +83,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Check if the cookie is set
-if (isset($_COOKIE['teacherEmail'])) {  
-    //teacherEmail is available, you can use it wherever needed
-    $teacherEmail = $_COOKIE['teacherEmail'];
-    // Proceed with your logic here
+if(isset($_COOKIE['teacherEmail'])){
+    $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
 } else {
-    //teacherEmail cookie is not set, handle unauthorized access
-    echo "<script>alert('Your session has timed out. Please log in again.');</script>";
-    header('Location: TeacherLogin.html');
+    // Redirect to login page after displaying a message
+    echo '<script>
+            var confirmMsg = confirm("Your session has timed out. Please log in again.");
+            if (confirmMsg) {
+                window.location.href = "TeacherLogin.html";
+            }
+          </script>';
     exit();
 }
 

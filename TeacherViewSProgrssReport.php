@@ -280,19 +280,5 @@
             </div>
         </main>
     </div>
-
-    <script>
-        document.getElementById("firstSearchBtn").addEventListener("click", function() {
-            document.getElementById("secondFilterBar").classList.remove("d-none");
-        });
-
-        document.getElementById("secondSearchBtn").addEventListener("click", function() {
-            // Display progress report or perform other actions here
-            // For now, just show the progress report container
-            document.getElementById("progressReport").classList.remove("d-none");
-        });
-    </script>
-
-
 </body>
 </html>
