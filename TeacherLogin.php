@@ -46,9 +46,11 @@
 
                 // Fetch the student ID from the row
                 $teacherEmail = $row['TeacherEmail'];
+                $teacherId = $row['TeacherId'];
 
                 // Set cookie for StudentId (expire in 30 minutes)
-                setcookie('teacherEmail', $teacherEmail, time() + (30 * 60), "/"); 
+                setcookie('teacherEmail', $teacherEmail, time() + (30 * 60), "/");
+                setcookie('teacherId', $teacherId, time() + (30 * 60), "/");
 
                 // Redirect to student dashboard
                 header("Location: TeacherDashboard.php");

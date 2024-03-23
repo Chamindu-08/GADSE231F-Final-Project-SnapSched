@@ -24,40 +24,9 @@
                                 <div class="col">
                                     <div class="p-3 m-1">
                                         <h4>School Progress Report</h4>
-                                        <form name="formYearSearch" method="post" action="#">
+                                        <form id="formYearSearch" method="post" action="#">
                                             <table>
                                                 <tr>
-                                                    <td>Year</td>
-                                                    <td>
-                                                        <?php
-                                                        // Database connection
-                                                        include 'DBConnection/DBConnection.php';
-
-                                                        if (!$connection) {
-                                                            echo "Connection failed";
-                                                        }
-
-                                                        $sql = "SELECT DISTINCT MarkOfYear FROM marks ORDER BY MarkOfYear DESC";
-                                                        $result = mysqli_query($connection, $sql);
-
-                                                        if ($result) {
-                                                            echo '<select id="yearSelect" class="grade-select-dropdown" name="year">';
-                                                            
-                                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                                echo '<option value="' . $row['MarkOfYear'] . '">' . $row['MarkOfYear'] . '</option>';
-                                                            }
-                                                            
-                                                            echo '</select>';
-                                                            
-                                                            mysqli_free_result($result);
-                                                        } else {
-                                                            echo "Error: " . mysqli_error($connection);
-                                                        }
-
-                                                        // Close the database connection
-                                                        mysqli_close($connection);
-                                                        ?>
-                                                    </td>
                                                     <td>Grade</td>
                                                     <td>
                                                         <?php
@@ -72,7 +41,7 @@
                                                         $result = mysqli_query($connection, $sql);
 
                                                         if ($result) {
-                                                            echo '<select id="gradeSelect" class="grade-select-dropdown" name="grade">';
+                                                            echo '<select id="gradeSelect" class="grade-select-dropdown" name="gradeSelect">';
                                                             
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 echo '<option value="' . $row['Grade'] . '">' . $row['Grade'] . '</option>';
@@ -89,6 +58,28 @@
                                                         mysqli_close($connection);
                                                         ?>
                                                     </td>
+                                                    <td>
+                                                        <button id="firstSearchBtn" class="btnStyle1 mx-2" type="submit" name="submit">Search</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="secondFilterBar" class="row">
+                    <div class="card flex-fill border-0 illustration">
+                        <div class="card-body p-0 d-flex flex-fill">
+                            <div class="row g-0 w-100">
+                                <div class="col">
+                                    <div class="p-3 m-1">
+                                        <form id="formStudentSearch" method="post" action="#">
+                                            <table>
+                                                <tr>
                                                     <td>Student</td>
                                                     <td>
                                                         <?php
@@ -99,14 +90,52 @@
                                                             echo "Connection failed";
                                                         }
 
-                                                        $sql = "SELECT * FROM student WHERE Grade=6";
+                                                        if (isset($_POST['gradeSelect'])) {
+                                                            $selectedGrade = $_POST['gradeSelect'];
+                                                            $selectedYear = isset($_POST['year']) ? $_POST['year'] : ''; // Handle undefined index error
+                                                            $sql = "SELECT * FROM student WHERE Grade=$selectedGrade";
+                                                            $result = mysqli_query($connection, $sql);
+
+                                                            if ($result) {
+                                                                echo '<select id="studentSelect" class="grade-select-dropdown" name="studentId">';
+                                                                
+                                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                                    echo '<option value="' . $row['StudentId'] . '">' . $row['StudentId'] . '</option>';
+                                                                }
+                                                                
+                                                                echo '</select>';
+                                                                
+                                                                mysqli_free_result($result);
+                                                            } else {
+                                                                echo "Error: " . mysqli_error($connection);
+                                                            }
+                                                        } else {
+                                                            echo '<select id="studentSelect" class="grade-select-dropdown" name="studentId">';
+                                                            echo '</select>';
+                                                        }
+
+                                                        // Close the database connection
+                                                        mysqli_close($connection);
+                                                        ?>
+                                                    </td>
+                                                    <td>Year</td>
+                                                    <td>
+                                                        <?php
+                                                        // Database connection
+                                                        include 'DBConnection/DBConnection.php';
+
+                                                        if (!$connection) {
+                                                            echo "Connection failed";
+                                                        }
+
+                                                        $sql = "SELECT DISTINCT MarkOfYear FROM marks ORDER BY MarkOfYear DESC";
                                                         $result = mysqli_query($connection, $sql);
 
                                                         if ($result) {
-                                                            echo '<select id="studentSelect" class="grade-select-dropdown" name="studentId">';
+                                                            echo '<select id="yearSelect" class="grade-select-dropdown" name="yearSelect">';
                                                             
                                                             while ($row = mysqli_fetch_assoc($result)) {
-                                                                echo '<option value="' . $row['StudentId'] . '">' . $row['StudentId'] . '</option>';
+                                                                echo '<option value="' . $row['MarkOfYear'] . '">' . $row['MarkOfYear'] . '</option>';
                                                             }
                                                             
                                                             echo '</select>';
@@ -121,7 +150,7 @@
                                                         ?>
                                                     </td>
                                                     <td>
-                                                        <button class="btnStyle1 mx-2" type="submit" name="submit">Search</button>
+                                                        <button id="secondSearchBtn" class="btnStyle1 mx-2" type="submit">Search</button>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -134,11 +163,12 @@
                 </div>
 
                 <!-- Table Element -->
+                <div id="progressReport" class="card border-0">
                 <div class="card border-0">
                     <div class="card-body">
                         <?php
                         // Check if form is submitted
-                        if (isset($_POST['submit'])) {
+                        if (isset($_POST['studentId'])) {
                             // Database connection
                             include 'DBConnection/DBConnection.php';
 
@@ -153,7 +183,7 @@
 
                             // Retrieve selected year from form
                             $selectedStudent = $_POST['studentId'];
-                            $selectedYear = $_POST['year'];
+                            $selectedYear = $_POST['yearSelect']; 
 
                             // Fetch student information
                             $studentSql = "SELECT CONCAT(FirstName, ' ', LastName) AS FullName, Grade 
@@ -246,12 +276,23 @@
                         ?>
                     </div>
                 </div>
+                </div>
             </div>
         </main>
     </div>
 
-    <script src="js/Dashboard.js"></script>
-    <!-- Bootstrap script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("firstSearchBtn").addEventListener("click", function() {
+            document.getElementById("secondFilterBar").classList.remove("d-none");
+        });
+
+        document.getElementById("secondSearchBtn").addEventListener("click", function() {
+            // Display progress report or perform other actions here
+            // For now, just show the progress report container
+            document.getElementById("progressReport").classList.remove("d-none");
+        });
+    </script>
+
+
 </body>
 </html>

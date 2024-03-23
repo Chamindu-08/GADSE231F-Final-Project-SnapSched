@@ -74,7 +74,7 @@ mysqli_close($connection);
 
 <script>
     function teacherProUpdate(){
-      window.location.href = "StudentProfileUpdate.php";
+      window.location.href = "TeacherProfileUpdate.php";
     }
 </script>
     <div class="wrapper">

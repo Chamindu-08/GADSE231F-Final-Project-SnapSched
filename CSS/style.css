@@ -469,6 +469,10 @@ header {
     width: 80%;
 }
 
+.table-responsive {
+    overflow-x: auto;
+}
+
 /* change password */
 .cpTable{
     width: 80%;
