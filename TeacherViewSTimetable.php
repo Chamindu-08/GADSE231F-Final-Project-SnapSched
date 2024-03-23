@@ -23,7 +23,7 @@
                             <div class="row g-0 w-100">
                                 <div class="col">
                                     <div class="p-3 m-1">
-                                        <h4>School Progress Report</h4>
+                                        <h4>Student Time Table</h4>
                                         <form name="formYearSearch" method="post" action="#">
                                             <table>
                                                 <tr>
