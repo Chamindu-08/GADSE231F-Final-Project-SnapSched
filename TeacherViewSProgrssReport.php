@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress Report | Student</title>
+    <title>Progress Report | Teacher</title>
 
     <!-- stylesheet -->
     <link rel="stylesheet" href="CSS/Dashboard.css" />
