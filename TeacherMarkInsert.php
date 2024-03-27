@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +30,7 @@
                                                         <td>Grade :</td>
                                                         <td>
                                                             <?php
-                                                            // Database connection
+                                                            //database connection
                                                             include 'DBConnection/DBConnection.php';
     
                                                             if (!$connection) {
@@ -45,6 +43,7 @@
                                                             if ($result) {
                                                                 echo '<select id="gradeSelect" class="grade-select-dropdown" name="gradeSelect">';
                                                                 
+                                                                //fetch data from the database
                                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                                     echo '<option value="' . $row['Grade'] . '">' . $row['Grade'] . '</option>';
                                                                 }
@@ -56,26 +55,28 @@
                                                                 echo "Error: " . mysqli_error($connection);
                                                             }
     
-                                                            // Close the database connection
+                                                            //close the database connection
                                                             mysqli_close($connection);
                                                             ?>
                                                         </td>
                                                         <td>Subject :</td>
                                                         <td>
                                                         <?php
-                                                        // Database connection
+                                                        //database connection
                                                         include 'DBConnection/DBConnection.php';
 
                                                         if (!$connection) {
                                                             echo "Connection failed";
                                                         }
 
+                                                        //fetch data from the database
                                                         $sql = "SELECT * FROM subjects";
                                                         $result = mysqli_query($connection, $sql);
 
                                                         if ($result) {
                                                             echo '<select id="subjectSelect" class="subject-select-dropdown" name="subjectSelect">';
                                                             
+                                                            //fetch data from the database
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 echo '<option value="' . $row['SubjectName'] . '">' . $row['SubjectName'] . '</option>';
                                                             }
@@ -87,7 +88,7 @@
                                                             echo "Error: " . mysqli_error($connection);
                                                         }
 
-                                                        // Close the database connection
+                                                        //close the database connection
                                                         mysqli_close($connection);
                                                         ?>
                                                     </td>
@@ -116,65 +117,66 @@
                     <div class="card border-0">
                         <div class="card-body">
                         <?php
-                        // Handle form submission
+                        //handle form submission
                         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                            // Retrieve selected values from the form
+                            //retrieve selected values from the form
                             $selectedGrade = $_POST['gradeSelect'];
                             $selectedSubject = $_POST['subjectSelect'];
                             $selectedTerm = $_POST['termSelect'];
 
-                            // Display student details
-echo '<table class="tableHead">';
-echo '<tr><th colspan="2"><img src="Images/Logo.jpg"></th></tr>';
-echo '<tr><th colspan="2">Sri Indasara Vidyalaya</th></tr>';
-echo '<tr><td>Grade : ' . $selectedGrade . '</td><td colspan="2">Subject : ' . $selectedSubject . '</td></tr>';
-echo '<tr><td>School year : ' . date("Y") . '</td><td>Term : ' . $selectedTerm . '</td></tr>';
-echo '</table>';
+                            //display student details
+                            echo '<table class="tableHead">';
+                            echo '<tr><th colspan="2"><img src="Images/Logo.jpg"></th></tr>';
+                            echo '<tr><th colspan="2">Sri Indasara Vidyalaya</th></tr>';
+                            echo '<tr><td>Grade : ' . $selectedGrade . '</td><td colspan="2">Subject : ' . $selectedSubject . '</td></tr>';
+                            echo '<tr><td>School year : ' . date("Y") . '</td><td>Term : ' . $selectedTerm . '</td></tr>';
+                            echo '</table>';
 
 
-                            // Database connection
+                            //database connection
                             include 'DBConnection/DBConnection.php';
 
+                            //check the connection
                             if (!$connection) {
                                 echo "Connection failed";
                             }
 
-                            // Fetch student data based on selected criteria
+                            //fetch student data based on selected criteria
                             $sql = "SELECT * FROM student WHERE Grade = '$selectedGrade'";
                             $result = mysqli_query($connection, $sql);
 
-                            // Display student data
-if ($result) {
-  echo '<table class="table">';
-  echo '<thead class="table-dark">';
+                            //display student data
+                            if ($result) {
+                                echo '<table class="table">';
+                                echo '<thead class="table-dark">';
+                                echo '<tr>';
+                                echo '<th style="width: 20%;">Student ID</th>';
+                                echo '<th style="width: 40%;">Student Name</th>';
+                                echo '<th style="width: 10%;">Term</th>';
+                                echo '<th style="width: 30%;">Mark</th>';
+                                echo '</tr>';
+                                echo '</thead>';
+                                echo '<tbody>';
+
+                                while ($row = mysqli_fetch_assoc($result)) {
                                     echo '<tr>';
-                                    echo '<th style="width: 20%;">Student ID</th>';
-                                    echo '<th style="width: 40%;">Student Name</th>';
-                                    echo '<th style="width: 10%;">Term</th>';
-                                    echo '<th style="width: 30%;">Mark</th>';
+                                    echo '<td>' . $row['StudentId'] . '</td>';
+                                    echo '<td>' . $row['FirstName'] . ' ' . $row['LastName'] . '</td>'; //concatenating FirstName and LastName
+                                    echo '<td>' . $selectedTerm . '</td>';
+                                    echo '<td><input type="text" name="marks"></td>';
                                     echo '</tr>';
-                                    echo '</thead>';
-                                    echo '<tbody>';
-  while ($row = mysqli_fetch_assoc($result)) {
-      echo '<tr>';
-      echo '<td>' . $row['StudentId'] . '</td>';
-      echo '<td>' . $row['FirstName'] . ' ' . $row['LastName'] . '</td>'; // Concatenating FirstName and LastName
-      echo '<td>' . $selectedTerm . '</td>';
-      echo '<td><input type="text" name="marks"></td>';
-      echo '</tr>';
-  }
-  echo '<tr>';
-  echo '<td colspan="2"><button type="submit" class="btnStyle1 mx-2">Save</button></td>';
-  echo '</tr>';
-  echo '</tbody>';
-  echo '</table>';
-  mysqli_free_result($result);
-} else {
-  echo "Error: " . mysqli_error($connection);
-}
+                                }
+                                    echo '<tr>';
+                                    echo '<td colspan="2"><button type="submit" class="btnStyle1 mx-2">Save</button></td>';
+                                    echo '</tr>';
+                                    echo '</tbody>';
+                                    echo '</table>';
+                                    mysqli_free_result($result);
+                                } else {
+                                    echo "Error: " . mysqli_error($connection);
+                                }
 
-
-                            // Close the database connection
+                            //close the database connection
                             mysqli_close($connection);
                         }
                         ?>

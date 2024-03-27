@@ -20,11 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<script>alert('Current Password is required.');</script>";
         } else {
             
-            // Check if the cookie is set
+            //check if the cookie is set
             if(isset($_COOKIE['studentId'])){
                 $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
             } else {
-                // Redirect to login page after displaying a message
+                //if cookie is not set, redirect to login page
                 echo '<script>
                         var confirmMsg = confirm("Your session has timed out. Please log in again.");
                         if (confirmMsg) {
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Close the database connection
+//close the database connection
 mysqli_close($connection);
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 if(isset($_POST["date"])) {
-    //Accept HTML Form data
+    //accept HTML Form data
     $Date = $_POST["date"];
     $Reason = $_POST["reason"];
 
@@ -8,19 +8,19 @@ if(isset($_POST["date"])) {
     if (empty($Date) || empty($Reason)) {
         echo "<script>alert('All fields are required.');</script>";
     } else {
-        // Include database connection
+        //include database connection
         include 'DBConnection/DBConnection.php';
 
-        // Check if the connection to the database failed
+        //check if the connection to the database failed
         if (!$connection) {
             echo "Database connection failed. Please try again later.";
         }
 
-        // Check if the cookie is set
+        //check if the cookie is set
         if(isset($_COOKIE['teacherId'])){
-            $TeacherId = $_COOKIE['teacherId']; // Retrieving teacherEmail from cookie
+            $TeacherId = $_COOKIE['teacherId'];
         } else {
-            // Redirect to login page after displaying a message
+            //redirect to login page after displaying a message
             echo '<script>
                     var confirmMsg = confirm("Your session has timed out. Please log in again.");
                     if (confirmMsg) {
@@ -30,21 +30,21 @@ if(isset($_POST["date"])) {
             exit();
         }
 
-        // Get the latest AbsentId from the database to determine the next ID
+        //get the latest AbsentId from the database to determine the next ID
         $latestAbsentIdQuery = "SELECT AbsentId FROM absenteeism ORDER BY AbsentId DESC LIMIT 1";
         $result = mysqli_query($connection, $latestAbsentIdQuery);
 
         if ($row = mysqli_fetch_assoc($result)) {
             $lastAbsentId = $row['AbsentId'];
-            $lastNumber = intval(substr($lastAbsentId, 1)); // Extracting the number part and converting it to an integer
+            $lastNumber = intval(substr($lastAbsentId, 1)); //extracting the number part and converting it to an integer
             $nextNumber = $lastNumber + 1;
-            $nextAbsentId = 'A' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); // Padding the number with leading zeros
+            $nextAbsentId = 'A' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); //padding the number with leading zeros
         } else {
-            // If no records exist in the table, start from A001
+            //if no records exist in the table, start from A001
             $nextAbsentId = 'A001';
         }
 
-        // Perform SQL Operations
+        //SQL query to insert data into the absenteeism table
         $sql = "INSERT INTO absenteeism (AbsentId, TeacherId, Reson, AbsentDate) VALUES ('$nextAbsentId', '$TeacherId', '$Reason', '$Date')";
 
         $result = mysqli_query($connection, $sql);
@@ -55,7 +55,7 @@ if(isset($_POST["date"])) {
             echo "<script>alert('Error: " . $sql . "<br>" . mysqli_error($connection) . "');</script>";
         }
 
-        // Disconnect
+        //close the database connection
         mysqli_close($connection);
     }
 }

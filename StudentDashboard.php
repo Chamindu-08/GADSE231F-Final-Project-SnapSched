@@ -1,11 +1,9 @@
 <?php
-    // Check if the grade cookie is set
+    //check if the grade cookie is set
     if (isset($_COOKIE['grade'])) {
-        // Grade is available, you can use it wherever needed
         $grade = $_COOKIE['grade'];
-        // Proceed with your logic here
     } else {
-        // Grade cookie is not set, handle unauthorized access
+        //redirect to login page after displaying a message
         echo "<script>alert('Your session has timed out. Please log in again.');</script>";
         header('Location: StudentLogin.html');
         exit();
@@ -37,8 +35,39 @@
                             <div class="row g-0 w-100">
                                 <div class="col">
                                     <div class="p-3 m-1">
-                                        <h4>Upcoming Events</h4>
-                                        <p class="mb-0">There are no upcoming events</p>
+                                        <h4>Announcement</h4>
+                                        <?php
+                                            //get database connection
+                                            include 'DBConnection/DBConnection.php';
+
+                                            //check connection
+                                            if (!$connection) {
+                                                echo "Connection failed";
+                                            }
+
+                                            //SQL query
+                                            $sql = "SELECT * FROM announcement WHERE AnnouncementDate >= CURDATE() AND (Recipient = 'both' OR Recipient = 'student')";
+
+                                            $result = mysqli_query($connection,$sql);
+
+                                            //output data
+                                            if (mysqli_num_rows($result) > 0) {
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    echo "<div class='card border-0'>";
+                                                    echo "<div class='card-body'>";
+                                                    echo "<h5 class='card-title'>" . $row['AnnouncementDate'] . "</h5>";
+                                                    echo "<p class='card-text'>" . $row['Announcement'] . "</p>";
+                                                    echo "</div>";
+                                                    echo "</div>";
+                                                }
+                                            } else {
+                                                //no announcements display message
+                                                echo "No announcements.";
+                                            }
+
+                                            //close the database connection
+                                            mysqli_close($connection);
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -58,16 +87,16 @@
                             //get database connection
                             include 'DBConnection/DBConnection.php';
 
-                            // Check connection
+                            //check connection
                             if (!$connection) {
                                 echo "Connection failed";
                             }
 
-                            // Check if the cookie is set
+                            //check if the cookie is set
                             if(isset($_COOKIE['grade'])){
-                                $grade = $_COOKIE['grade']; // Retrieving teacherEmail from cookie
+                                $grade = $_COOKIE['grade'];
                             } else {
-                                // Redirect to login page after displaying a message
+                                //if cookie is not set, redirect to login page
                                 echo '<script>
                                         var confirmMsg = confirm("Your session has timed out. Please log in again.");
                                         if (confirmMsg) {
@@ -77,7 +106,7 @@
                                 exit();
                             }
 
-                            // SQL query
+                            //SQL query
                             $sql = "SELECT subjects.SubjectName, teaching.DayOfWeek
                                     FROM subjects 
                                     INNER JOIN teaching ON subjects.SubjectId = teaching.SubjectId 
@@ -85,9 +114,9 @@
 
                             $result = mysqli_query($connection,$sql);
                         
-                            // Output data
+                            //output data
                             if (mysqli_num_rows($result) > 0) {
-                                // Initialize array to store subjects by day of week
+                                //initialize array to store subjects by day of week
                                 $subjectsByDay = array(
                                     'Monday' => array(),
                                     'Tuesday' => array(),
@@ -96,12 +125,12 @@
                                     'Friday' => array()
                                 );
                             
-                                // Store subjects in the array by day of week
+                                //store subjects in the array by day of week
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $subjectsByDay[$row['DayOfWeek']][] = $row['SubjectName'];
                                 }
 
-                                // Start the table
+                                //start the table
                                 echo "<table class='table'>";
                                 echo "<thead class='table-dark'>";
                                 echo "<tr>";
@@ -114,15 +143,15 @@
                                 echo "</thead>";
                                 echo "<tbody>";
 
-                                // Determine the maximum number of subjects for any day
+                                //determine the maximum number of subjects for any day
                                 $maxSubjects = max(array_map('count', $subjectsByDay));
                                 $rowCount = 0; // Initialize row count
 
-                                // Output data for each row
+                                //output data for each row
                                 for ($i = 0; $i < $maxSubjects; $i++) {
                                     echo "<tr>";
 
-                                    // Output subjects for each day
+                                    //output subjects for each day
                                     foreach ($subjectsByDay as $day => $subjects) {
                                         echo "<td>";
                                         if (isset($subjects[$i])) {
@@ -133,24 +162,24 @@
 
                                     echo "</tr>";
 
-                                    // Increment row count
+                                    //increment row count
                                     $rowCount++;
 
-                                    // Add an interval row after every 4 rows filled
+                                    //add an interval row after every 4 rows filled
                                     if ($rowCount % 4 == 0 && $i < $maxSubjects - 1) {
                                         echo "<tr><th colspan='5' class='table-success interval'>INTERVAL</th></tr>";
                                     }
                                 }
                             
-                                // End the table
+                                //end the table
                                 echo "</tbody>";
                                 echo "</table>";
                             } else {
-                                // If no results found
+                                //if no results found
                                 echo "No subjects found for this grade and year.";
                             }
                         
-                            // Close the database connection
+                            //close the database connection
                             mysqli_close($connection);
                         ?>
                     </div>

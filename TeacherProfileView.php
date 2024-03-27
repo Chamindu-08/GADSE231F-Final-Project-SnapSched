@@ -2,12 +2,12 @@
 //get database connection
 include 'DBConnection/DBConnection.php';
 
-// Check connection
+//check connection
 if (!$connection) {
     echo "Connection failed";
 }
 
-// Initialize variables to store retrieved values
+//initialize variables to store retrieved values
 $first_name = "";
 $last_name = "";
 $sure_name = "";
@@ -18,11 +18,11 @@ $email = "";
 $contact_no = "";
 $password = "";
 
-// Check if the cookie is set
+//check if the cookie is set
 if(isset($_COOKIE['teacherEmail'])){
     $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
 } else {
-    // Redirect to login page after displaying a message
+    //if cookie is not set, redirect to login page
     echo '<script>
             var confirmMsg = confirm("Your session has timed out. Please log in again.");
             if (confirmMsg) {
@@ -32,7 +32,7 @@ if(isset($_COOKIE['teacherEmail'])){
     exit();
 }
 
-// SQL query to retrieve student information
+//SQL query to retrieve student information
 $sql = "SELECT * FROM teacher WHERE TeacherEmail= '$teacherEmail'";
 
 $result = mysqli_query($connection,$sql);
@@ -42,7 +42,7 @@ if ($result === false) {
 }
 
 if ($result->num_rows > 0) {
-    // output data of the first row (assuming only one student is retrieved)
+    //output data of the first row (assuming only one student is retrieved)
     $row = $result->fetch_assoc();
     $first_name = $row["FirstName"];
     $last_name = $row["LastName"];
@@ -57,7 +57,7 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-// Close the database connection
+//close the database connection
 mysqli_close($connection);
 ?>
 
@@ -156,7 +156,6 @@ mysqli_close($connection);
             </main>
         </div>
     </div>
-
 
     <script src="js/Dashboard.js"></script>
     <!-- link Bootstap -->

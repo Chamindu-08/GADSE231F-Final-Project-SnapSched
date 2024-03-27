@@ -2,29 +2,29 @@
 //get database connection
 include 'DBConnection/DBConnection.php';
 
-// Check connection
+//check connection
 if (!$connection) {
     echo "Connection failed";
 }
 
-// Check if the form is submitted
+//check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
+    //retrieve form data
     $currentPassword = $_POST['currentPassword'];
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
     
-    // Check if newPassword or confirmPassword is empty and currentPassword is not empty
+    //check if newPassword or confirmPassword is empty and currentPassword is not empty
     if (!empty($newPassword) || !empty($confirmPassword)) {
         if (empty($currentPassword)) {
             echo "<script>alert('Current Password is required.');</script>";
         } else {
 
-            // Check if the cookie is set
+            //check if the cookie is set
             if(isset($_COOKIE['teacherEmail'])){
-                $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
+                $teacherEmail = $_COOKIE['teacherEmail'];
             } else {
-                // Redirect to login page after displaying a message
+                //if cookie is not set, redirect to login page
                 echo '<script>
                         var confirmMsg = confirm("Your session has timed out. Please log in again.");
                         if (confirmMsg) {
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
 
-            // Verify current password
+            //verify current password
             $sqlVerifyPassword = "SELECT TeacherPassword FROM teacher WHERE TeacherEmail='$teacherEmail'";
             $resultVerifyPassword = mysqli_query($connection, $sqlVerifyPassword);
 
@@ -45,11 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($currentPassword != $storedPassword) {
                     echo "<script>alert('Incorrect current password.');</script>";
                 } else {
-                    // Check if newPassword and confirmPassword match
+                    //check if newPassword and confirmPassword match
                     if ($newPassword != $confirmPassword) {
                         echo "<script>alert('Password and Confirm Password do not match. Please enter again.');</script>";
                     } else {
-                        // Update student table with new password
+                        //update student table with new password
                         $sqlUpdatePassword = "UPDATE teacher SET TeacherPassword='$newPassword' WHERE TeacherEmail='$teacherEmail'";
                 
                         $result = mysqli_query($connection, $sqlUpdatePassword);
@@ -66,12 +66,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
-        // No password update requested
+        //no password update requested
         echo "<script>alert('No changes made to password.');</script>";
     }
 }
 
-// Close the database connection
+//close the database connection
 mysqli_close($connection);
 ?>
 

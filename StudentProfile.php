@@ -2,12 +2,12 @@
 //get database connection
 include 'DBConnection/DBConnection.php';
 
-// Check connection
+//check connection
 if (!$connection) {
     echo "Connection failed";
 }
 
-// Initialize variables to store retrieved values
+//initialize variables to store retrieved values
 $first_name = "";
 $last_name = "";
 $sure_name = "";
@@ -21,11 +21,11 @@ $contact_no = "";
 $emergency_contact_no = "";
 $password = "";
 
-// Check if the cookie is set
+//check if the cookie is set
 if(isset($_COOKIE['studentId'])){
-    $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
+    $studentId = $_COOKIE['studentId'];
 } else {
-    // Redirect to login page after displaying a message
+    //if cookie is not set, redirect to login page
     echo '<script>
             var confirmMsg = confirm("Your session has timed out. Please log in again.");
             if (confirmMsg) {
@@ -36,7 +36,7 @@ if(isset($_COOKIE['studentId'])){
 }
 
 
-// SQL query to retrieve student information
+//SQL query to retrieve student information
 $sql = "SELECT student.StudentId,student.FirstName,student.LastName,student.SurName,student.StudentAddress,student.DOB,student.AdmissionDate,student.StudentEmail,student.StudentPassword,student.Grade,currentStudent.GuardianName,currentStudent.GuardianContactNo,currentStudent.EmergencyContactNo FROM student INNER JOIN currentStudent ON student.StudentId = currentStudent.StudentId WHERE student.StudentId = '$studentId'";
 
 $result = mysqli_query($connection,$sql);
@@ -46,7 +46,7 @@ if ($result === false) {
 }
 
 if ($result->num_rows > 0) {
-    // output data of the first row (assuming only one student is retrieved)
+    //output data of the first row (assuming only one student is retrieved)
     $row = $result->fetch_assoc();
     $first_name = $row["FirstName"];
     $last_name = $row["LastName"];
@@ -64,7 +64,7 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-// Close the database connection
+//close the database connection
 mysqli_close($connection);
 ?>
 
@@ -180,7 +180,6 @@ mysqli_close($connection);
             </main>
         </div>
     </div>
-
 
     <script src="js/Dashboard.js"></script>
     <!-- link Bootstap -->

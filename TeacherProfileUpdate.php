@@ -2,14 +2,14 @@
 //get database connection
 include 'DBConnection/DBConnection.php';
 
-// Check connection
+//check connection
 if (!$connection) {
     echo "Connection failed";
 }
 
-// Check if the form is submitted
+//check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
+    //retrieve form data
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $surName = $_POST['sur_name'];
@@ -20,11 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['new_password'];
     $confirmPassword = $_POST['confirm_password'];
     
-    // Check if the cookie is set
+    //check if the cookie is set
     if(isset($_COOKIE['teacherEmail'])){
-        $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
+        $teacherEmail = $_COOKIE['teacherEmail'];
     } else {
-        // Redirect to login page after displaying a message
+        //if cookie is not set, redirect to login page
         echo '<script>
                 var confirmMsg = confirm("Your session has timed out. Please log in again.");
                 if (confirmMsg) {
@@ -34,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Check if newPassword or confirmPassword is empty and currentPassword is not empty
+    //check if newPassword or confirmPassword is empty and currentPassword is not empty
     if (!empty($newPassword) || !empty($confirmPassword)) {
         if (empty($currentPassword)) {
             echo "<script>alert('Current Password is required.');</script>";
         } else {
-            // Verify current password
+            //verify current password
             $sqlVerifyPassword = "SELECT TeacherPassword FROM teacher WHERE TeacherEmail='$teacherEmail'";
             $resultVerifyPassword = mysqli_query($connection, $sqlVerifyPassword);
 
@@ -50,15 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($currentPassword != $storedPassword) {
                     echo "<script>alert('Incorrect current password.');</script>";
                 } else {
-                    // Check if newPassword and confirmPassword match
+                    //check if newPassword and confirmPassword match
                     if ($newPassword != $confirmPassword) {
                         echo "<script>alert('Password and Confirm Password do not match. Please enter again.');</script>";
                     } else {
-                        // Update teacher table
+                        //update teacher table
                         $sqlUpdatePassword = "UPDATE teacher SET TeacherPassword='$newPassword' WHERE TeacherEmail='$teacherEmail'";
                 
                         $result = mysqli_query($connection, $sqlUpdatePassword);
 
+                        //check if the query is executed successfully
                         if ($result) {
                             echo "<script>alert('Teacher record updated successfully');</script>";
                         } else {
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
-        // Update teacher table without password change
+        //update teacher table without password change
         $sqlTeacher = "UPDATE teacher SET FirstName='$firstName', LastName='$lastName', SurName='$surName', TeacherAddress='$address', TeacherEmail='$email', TeacherContactNo='$contact_no' WHERE TeacherEmail='$teacherEmail'";
         
         if (mysqli_query($connection, $sqlTeacher)) {
@@ -82,11 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Check if the cookie is set
+//check if the cookie is set
 if(isset($_COOKIE['teacherEmail'])){
-    $teacherEmail = $_COOKIE['teacherEmail']; // Retrieving teacherEmail from cookie
+    $teacherEmail = $_COOKIE['teacherEmail'];
 } else {
-    // Redirect to login page after displaying a message
+    //if cookie is not set, redirect to login page
     echo '<script>
             var confirmMsg = confirm("Your session has timed out. Please log in again.");
             if (confirmMsg) {
@@ -96,10 +97,12 @@ if(isset($_COOKIE['teacherEmail'])){
     exit();
 }
 
+//SQL query to retrieve teacher information
 $sql = "SELECT * FROM teacher WHERE TeacherEmail='$teacherEmail'";
 
 $result = mysqli_query($connection, $sql);
 
+//initialize variables to store retrieved values
 if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
     $first_name = $row['FirstName'];
@@ -112,7 +115,7 @@ if (mysqli_num_rows($result) > 0) {
     echo "0 results";
 }
 
-// Close the database connection
+//close the database connection
 mysqli_close($connection);
 ?> 
 

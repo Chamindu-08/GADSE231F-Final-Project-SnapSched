@@ -30,19 +30,21 @@
                                                     <td>Year</td>
                                                     <td>
                                                         <?php
-                                                        // Database connection
+                                                        //database connection
                                                         include 'DBConnection/DBConnection.php';
 
                                                         if (!$connection) {
                                                             echo "Connection failed";
                                                         }
 
+                                                        //SQL query to retrieve distinct years from marks table
                                                         $sql = "SELECT DISTINCT MarkOfYear FROM marks ORDER BY MarkOfYear DESC";
                                                         $result = mysqli_query($connection, $sql);
 
                                                         if ($result) {
                                                             echo '<select id="gradeSelect" class="grade-select-dropdown" name="year">';
                                                             
+                                                            //display year options in a dropdown
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 echo '<option value="' . $row['MarkOfYear'] . '">' . $row['MarkOfYear'] . '</option>';
                                                             }
@@ -54,7 +56,7 @@
                                                             echo "Error: " . mysqli_error($connection);
                                                         }
 
-                                                        // Close the database connection
+                                                        //close the database connection
                                                         mysqli_close($connection);
                                                         ?>
                                                     </td>
@@ -75,24 +77,29 @@
                 <div class="card border-0">
                     <div class="card-body">
                         <?php
-                        // Check if form is submitted
+                        //check if form is submitted
                         if (isset($_POST['submit'])) {
-                            // Initialize variables
+                            //initialize variables
                             $fullName = "";
                             $selectedYear = "";
                             $grade = "";
 
-                            // Retrieve selected year from form
+                            //retrieve selected year from form
                             $selectedYear = $_POST['year'];
 
-                            // Re-establish database connection
+                            //database connection
                             include 'DBConnection/DBConnection.php';
 
-                            // Check if the cookie is set
+                            //check connection
+                            if (!$connection) {
+                                echo "<script>alert('Connection failed.');</script>";
+                            }
+
+                            //check if the cookie is set
                             if(isset($_COOKIE['studentId'])){
-                                $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
+                                $studentId = $_COOKIE['studentId'];
                             } else {
-                                // Redirect to login page after displaying a message
+                                //if cookie is not set, redirect to login page
                                 echo '<script>
                                         var confirmMsg = confirm("Your session has timed out. Please log in again.");
                                         if (confirmMsg) {
@@ -102,7 +109,7 @@
                                 exit();
                             }
 
-                            // Fetch student information
+                            //fetch student information
                             $studentSql = "SELECT CONCAT(FirstName, ' ', LastName) AS FullName, Grade 
                                            FROM student 
                                            WHERE StudentId = '$studentId'";
@@ -113,7 +120,7 @@
                                 $fullName = $studentRow['FullName'];
                                 $grade = $studentRow['Grade'];
 
-                                // Display student details
+                                //display student details
                                 echo '<table class="tableHead">';
                                 echo '<tr><th colspan="2"><img src="Images/Logo.jpg"></th></tr>';
                                 echo '<tr><th colspan="2">Sri Indasara Vidyalaya</th></tr>';
@@ -121,7 +128,7 @@
                                 echo '<tr><td>School year : ' . $selectedYear . '</td><td>Grade : ' . $grade . '</td></tr>';
                                 echo '</table>';
 
-                                // Query to retrieve subject marks based on the selected year
+                                //query to retrieve subject marks based on the selected year
                                 $marksSql = "SELECT s.SubjectName, m.Term, m.Mark
                                              FROM marks m
                                              JOIN subjects s ON m.SubjectId = s.SubjectId
@@ -130,7 +137,7 @@
 
                                 $result = mysqli_query($connection, $marksSql);
 
-                                // Display progress report table
+                                //display progress report table
                                 if ($result) {
                                     echo '<table class="table" id="progressTable">';
                                     echo '<thead class="table-dark">';
@@ -148,7 +155,7 @@
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         if ($row['SubjectName'] !== $currentSubject) {
                                             if (!is_null($currentSubject)) {
-                                                // Print marks for the previous subject from the 4th column onwards
+                                                //print marks for the previous subject from the 4th column onwards
                                                 echo '<tr>';
                                                 $i = 0;
                                                 foreach ($marks as $key => $mark) {
@@ -159,15 +166,15 @@
                                                 }
                                                 echo '</tr>';
                                             }
-                                            // Reset marks array for the new subject
+                                            //reset marks array for the new subject
                                             $currentSubject = $row['SubjectName'];
                                             $marks = ['1st term Mark' => '', '2nd term Mark' => '', '3rd term Mark' => ''];
                                             echo '<tr><td>' . $currentSubject . '</td>';
                                         }
-                                        // Store mark in corresponding term slot
+                                        //store mark in corresponding term slot
                                         $marks[$row['Term']] = $row['Mark'];
                                     }
-                                    // Print marks for the last subject from the 4th column onwards
+                                    //print marks for the last subject from the 4th column onwards
                                     echo '<tr>';
                                     $i = 0;
                                     foreach ($marks as $key => $mark) {
@@ -187,7 +194,7 @@
                                 echo 'Error fetching student information: ' . mysqli_error($connection);
                             }
 
-                            // Close the database connection
+                            //close the database connection
                             mysqli_close($connection);
                         }
                         ?>

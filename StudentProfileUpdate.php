@@ -2,14 +2,14 @@
 //get database connection
 include 'DBConnection/DBConnection.php';
 
-// Check connection
+//check connection
 if (!$connection) {
     echo "Connection failed";
 }
 
-// Check if the form is submitted
+//check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
+    //retrieve form data
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $surName = $_POST['surName'];
@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
     
-    // Check if the cookie is set
+    //check if the cookie is set
     if(isset($_COOKIE['studentId'])){
-        $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
+        $studentId = $_COOKIE['studentId'];
     } else {
-        // Redirect to login page after displaying a message
+        //if cookie is not set, redirect to login page
         echo '<script>
                 var confirmMsg = confirm("Your session has timed out. Please log in again.");
                 if (confirmMsg) {
@@ -37,12 +37,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Check if newPassword or confirmPassword is empty and currentPassword is not empty
+    //check if newPassword or confirmPassword is empty and currentPassword is not empty
     if (!empty($newPassword) || !empty($confirmPassword)) {
         if (empty($currentPassword)) {
             echo "<script>alert('Current Password is required.');</script>";
         } else {
-            // Verify current password
+            //verify current password
             $sqlVerifyPassword = "SELECT StudentPassword FROM student WHERE StudentId='$studentId'";
             $resultVerifyPassword = mysqli_query($connection, $sqlVerifyPassword);
 
@@ -53,11 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($currentPassword != $storedPassword) {
                     echo "<script>alert('Incorrect current password.');</script>";
                 } else {
-                    // Check if newPassword and confirmPassword match
+                    //check if newPassword and confirmPassword match
                     if ($newPassword != $confirmPassword) {
                         echo "<script>alert('Password and Confirm Password do not match. Please enter again.');</script>";
                     } else {
-                        // Update student table
+                        //update student table
                         $sqlUpdatePassword = "UPDATE student SET StudentPassword='$newPassword' WHERE StudentId='$studentId'";
                 
                         $result = mysqli_query($connection, $sqlUpdatePassword);
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
-        // Update student table without password change
+        //update student table without password change
         $sqlStudent = "UPDATE student SET FirstName='$firstName', LastName='$lastName', SurName='$surName', DOB='$dob', StudentAddress='$address', StudentEmail='$email' WHERE StudentId='$studentId'";
         
         if (mysqli_query($connection, $sqlStudent)) {
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<script>alert('Error updating student record: " . mysqli_error($connection) . "');</script>";
         }
         
-        // Update currentStudent table
+        //update currentStudent table
         $sqlCurrentStudent = "UPDATE currentStudent SET GuardianName='$guardianName', GuardianContactNo='$guardianContact', EmergencyContactNo='$emergencyContact' WHERE StudentId='$studentId'";
         
         if (mysqli_query($connection, $sqlCurrentStudent)) {
@@ -94,11 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-    // Check if the cookie is set
+    //check if the cookie is set
     if(isset($_COOKIE['studentId'])){
-        $studentId = $_COOKIE['studentId']; // Retrieving teacherEmail from cookie
+        $studentId = $_COOKIE['studentId'];
     } else {
-        // Redirect to login page after displaying a message
+        //if cookie is not set, redirect to login page
         echo '<script>
                 var confirmMsg = confirm("Your session has timed out. Please log in again.");
                 if (confirmMsg) {
@@ -118,7 +118,7 @@ if (mysqli_num_rows($result) > 0) {
     echo "0 results";
 }
 
-// Close the database connection
+//close the database connection
 mysqli_close($connection);
 ?> 
 

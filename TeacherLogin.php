@@ -1,19 +1,19 @@
 <?php
-    // Start session
+    //start session
     session_start();
 
-    // Include database connection
+    //include database connection
     include 'DBConnection/DBConnection.php';
 
-    // Check if the connection to the database failed
+    //check if the connection to the database failed
     if (!$connection) {
         echo "Database connection failed. Please try again later.";
     }
 
-    // Check if username and password are provided via POST request
+    //check if username and password are provided via POST request
     if (isset($_POST['textUserName']) && isset($_POST['textPassword'])) {
 
-        // Function to validate input data
+        //function to validate input data
         function Validate($data) {
             $data = trim($data);
             $data = stripslashes($data);
@@ -21,50 +21,50 @@
             return $data;
         }
 
-        // Validate username and password
+        //validate username and password
         $userName = Validate($_POST['textUserName']);
         $password = Validate($_POST['textPassword']);
 
-        // Check if username or password is empty
+        //check if username or password is empty
         if (empty($userName) || empty($password)) {
             echo "Username and password are required fields.";
         } else {
-            // Construct SQL query to fetch user details
+            //construct SQL query to fetch user details
             $sql = "SELECT * FROM teacher WHERE TeacherEmail='$userName' AND TeacherPassword='$password'";
 
-            // Execute the query
+            //execute the query
             $result = mysqli_query($connection, $sql);
 
-            // Check if exactly one row is returned
+            //check if exactly one row is returned
             if (mysqli_num_rows($result) == 1) {
-                // Fetch the row
+                //fetch the row
                 $row = mysqli_fetch_assoc($result);
                 
-                // Store user details in session variables
+                //store user details in session variables
                 $_SESSION['userName'] = $row['TeacherEmail'];
                 $_SESSION['password'] = $password;
 
-                // Fetch the student ID from the row
+                //fetch the student ID from the row
                 $teacherEmail = $row['TeacherEmail'];
                 $teacherId = $row['TeacherId'];
 
-                // Set cookie for StudentId (expire in 30 minutes)
+                //set cookie for StudentId (expire in 30 minutes)
                 setcookie('teacherEmail', $teacherEmail, time() + (30 * 60), "/");
                 setcookie('teacherId', $teacherId, time() + (30 * 60), "/");
 
-                // Redirect to student dashboard
+                //redirect to student dashboard
                 header("Location: TeacherDashboard.php");
                 exit();
             } else {
-                // If no or more than one row is returned, display error
+                //if no or more than one row is returned, display error
                 echo "Invalid username or password.";
             }
         }
     } else {
-        // If username or password is not provided via POST request, display error
+        //if username or password is not provided via POST request, display error
         echo "Username and password are required fields.";
     }
 
-    // Close the database connection
+    //close the database connection
     mysqli_close($connection);
 ?>
