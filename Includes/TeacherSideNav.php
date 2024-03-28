@@ -3,7 +3,7 @@
             <!-- Content For Sidebar -->
             <div class="h-100">
                 <div class="sidebar-logo">
-                    <a href="#">Sujatha Vidyalaya</a>
+                    <a href="#">Sri Indasara Vidyalaya</a>
                     <img src="Images/flags.png" alt="">
                 </div>
                 <ul class="sidebar-nav">

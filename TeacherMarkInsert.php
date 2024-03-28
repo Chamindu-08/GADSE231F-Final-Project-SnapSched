@@ -1,5 +1,5 @@
 <?php
-//get database connection
+//database connection
 include 'DBConnection/DBConnection.php';
 
 //check connection
@@ -7,9 +7,9 @@ if (!$connection) {
     echo "Connection failed";
 }
 
-//check if the cookie is set
-if(isset($_COOKIE['teacherId'])){
-    $TeacherId = $_COOKIE['teacherId']; // Retrieving teacherEmail from cookie
+//check if the teacherId cookie is set
+if (isset($_COOKIE['teacherId'])) {
+    $TeacherId = $_COOKIE['teacherId'];
 } else {
     //if cookie is not set, redirect to login page
     echo '<script>
@@ -25,7 +25,7 @@ if(isset($_COOKIE['teacherId'])){
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
     //retrieve form data
     $marks = $_POST['marks'];
-    $studentIds = $_POST['studentId']; //array of student IDs
+    $studentIds = $_POST['studentId']; // Array of student IDs
     $selectedSubject = $_POST['subjectSelect'];
     $selectedTerm = $_POST['termSelect'];
 
@@ -33,14 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
     if (empty($marks) || empty($studentIds)) {
         echo "<script>alert('Marks and Student IDs are required.');</script>";
     } else {
-        //database connection
-        include 'DBConnection/DBConnection.php';
-
-        //check the connection
-        if (!$connection) {
-            echo "Connection failed";
-        }
-
         //current year
         $currentYear = date("Y");
 
@@ -51,31 +43,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
         if ($resultSubject) {
             $rowSubject = mysqli_fetch_assoc($resultSubject);
             $subjectId = $rowSubject['SubjectId'];
+
+            //variable to track successful inserts
+            $allInserted = true;
+
+            //iterate over each student ID and insert marks
+            foreach ($studentIds as $key => $studentId) {
+                //validate if the database has not recorded the marks for the student for the selected term
+                $sqlCheck = "SELECT * FROM marks WHERE StudentId = '$studentId' AND SubjectId = '$subjectId' AND Term = '$selectedTerm' AND MarkOfYear = '$currentYear'";
+                $resultCheck = mysqli_query($connection, $sqlCheck);
+
+                if (mysqli_num_rows($resultCheck) > 0) {
+                    echo "<script>alert('Marks for student ID: $studentId, Subject: $selectedSubject, Term: $selectedTerm, Year: $currentYear already recorded.');</script>";
+                } else {
+                    //get the mark
+                    $mark = $marks[$key];
+                    //insert marks into the database
+                    $sql = "INSERT INTO marks (StudentId, SubjectId, Mark, Term, MarkOfYear) VALUES ('$studentId', '$subjectId', '$mark', '$selectedTerm', '$currentYear')";
+                    $result = mysqli_query($connection, $sql);
+
+                    if (!$result) {
+                        //if any insert fails, set $allInserted to false
+                        $allInserted = false;
+                        echo "Error: " . mysqli_error($connection);
+                    }
+                }
+            }
+
+            //display success message if all inserts were successful
+            if ($allInserted) {
+                echo "<script>alert('Marks saved successfully.');</script>";
+            }
         } else {
             echo "Error: " . mysqli_error($connection);
-        }
-
-        //iterate over each student ID and insert marks
-        foreach ($studentIds as $key => $studentId) {
-            //validate databse has not recoded the marks for the student for the selected term
-            $sqlCheck = "SELECT * FROM marks WHERE StudentId = '$studentId' AND SubjectId = '$subjectId' AND Term = '$selectedTerm' AND MarkOfYear = '$currentYear'";
-            $resultCheck = mysqli_query($connection, $sqlCheck);
-
-            if (mysqli_num_rows($resultCheck) > 0) {
-                echo "<script>alert('Marks for student ID: $studentId, Subject: $selectedSubject, Term: $selectedTerm, Year: $currentYear already recorded.');</script>";
-            } else {
-
-            //get the mark
-            $mark = $marks[$key];
-            //insert marks into the database
-            $sql = "INSERT INTO marks (StudentId, SubjectId, Mark, Term, MarkOfYear) VALUES ('$studentId', '$subjectId', '$mark', '$selectedTerm', '$currentYear')";
-            $result = mysqli_query($connection, $sql);
-
-            if (!$result) {
-                echo "Error: " . mysqli_error($connection);
-            }
-            else {
-                echo "<script>alert('Marks saved successfully.');</script>";
         }
 
         //close the database connection
@@ -83,6 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>

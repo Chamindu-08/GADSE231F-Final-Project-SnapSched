@@ -1,3 +1,19 @@
+<?php
+// Check if the teacherId cookie is set
+if (isset($_COOKIE['teacherId'])) {
+    $TeacherId = $_COOKIE['teacherId']; // Retrieving teacherEmail from cookie
+} else {
+    // If cookie is not set, redirect to login page
+    echo '<script>
+            var confirmMsg = confirm("Your session has timed out. Please log in again.");
+            if (confirmMsg) {
+                window.location.href = "TeacherLogin.html";
+            }
+          </script>';
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
