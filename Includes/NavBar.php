@@ -1,6 +1,6 @@
     <!-- nav bar -->
 
-    <nav class="navBar navbar navbar-expand-sm fixed-top justify-content-center">
+    <nav class="otherNavBar navbar navbar-expand-sm fixed-top justify-content-center">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="Images/logo.jpg" alt="Logo" style="width:50px; height: auto;">
@@ -15,16 +15,16 @@
                         <a class="nav-link" href="HomePage.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Home</p></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="AboutUS.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">About School</p></a>
+                        <a class="nav-link" href="HomeAboutSchool.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">About School</p></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Administration.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Administration</p></a>
+                        <a class="nav-link" href="HomeAdministration.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Administration</p></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Academic.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Gallary</p></a>
+                        <a class="nav-link" href="HomeGallery.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Gallery</p></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="ContactUS.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Contact Us</p></a>
+                        <a class="nav-link" href="HomeContactUS.php"><p class="fontWhite" style="font-size: 13px; font-weight: bold;">Contact Us</p></a>
                     </li>
                 </ul>
             </div>
