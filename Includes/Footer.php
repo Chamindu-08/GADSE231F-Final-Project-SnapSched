@@ -83,7 +83,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <p class="text-bl let" style="color: lightgray;">© 2023 All Rights Reserved.<br>Developed by DSE23.1F Batch </p>
+                <p class="text-bl let" style="color: lightgray;">© 2024 All Rights Reserved.<br>Developed by DSE23.1F Batch </p>
             </div>
         </div>
     </div>
