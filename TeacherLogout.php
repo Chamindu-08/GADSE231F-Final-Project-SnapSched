@@ -6,5 +6,5 @@ session_start();
 session_destroy();
 
 //redirect to logout
-header("Location: HomePage.html");
+header("Location: HomePage.php");
 ?>

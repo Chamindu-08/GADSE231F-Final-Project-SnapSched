@@ -55,6 +55,7 @@
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                     echo "<div class='card border-0'>";
                                                     echo "<div class='card-body'>";
+                                                    echo "<h5 class='card-title'>" . $row['Subject'] . "</h5>";
                                                     echo "<h5 class='card-title'>" . $row['AnnouncementDate'] . "</h5>";
                                                     echo "<p class='card-text'>" . $row['Announcement'] . "</p>";
                                                     echo "</div>";
