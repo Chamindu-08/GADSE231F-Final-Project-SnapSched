@@ -79,7 +79,62 @@ if(isset($_COOKIE['teacherId'])){
                         </div>
                     </div>
                 </div>
+
+                <!-- display relief classes -->
+                <div class="card border-0">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Relief Classes
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            //get database connection
+                            include 'DBConnection/DBConnection.php';
+                                                        
+                            //check connection
+                            if (!$connection) {
+                                echo "Connection failed";
+                            }
+                        
+                            //SQL query to get relief classes for the current date and teacher
+                            $sql = "SELECT DISTINCT teaching.Grade, teaching.DayOfWeek, teaching.Period
+                                    FROM teaching
+                                    INNER JOIN relief ON teaching.TeachingId = relief.TeachingId
+                                    WHERE relief.TeacherId = '$TeacherId' AND DATE(relief.ReliefDate) = CURDATE()";
                 
+                            $result = mysqli_query($connection, $sql);
+                        
+                            //check for errors in the query
+                            if (!$result) {
+                                //print error message and exit
+                                echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+                                exit();
+                            }
+                        
+                            //output data period, grade and day of week only
+                            if (mysqli_num_rows($result) > 0) {
+                                //display relief classes
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo "<div class='card border-0'>";
+                                    echo "<div class='card-body'>";
+                                    echo "<h5 class='card-title'>" . $row['DayOfWeek'] . " - Grade " . $row['Grade'] . " - Period " . $row['Period'] . "</h5>";
+                                    echo "</div>";
+                                    echo "</div>";
+                                }
+                            
+                            } else {
+                                //if no results found
+                                echo "No relief classes for today.";
+                            }
+                        
+                            //close the database connection
+                            mysqli_close($connection);
+                        ?>
+                    </div>
+                </div>
+
+
                 <!-- Table Element -->
                 <div class="card border-0">
                     <div class="card-header">
