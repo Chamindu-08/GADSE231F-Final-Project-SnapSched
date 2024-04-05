@@ -7,6 +7,9 @@ if (!$connection) {
     echo "Connection failed";
 }
 
+//error message variable
+$errorMessage = "";
+
 //check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //retrieve form data
@@ -14,10 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
     
+    $errorMessage = "";
+
     //check if newPassword or confirmPassword is empty and currentPassword is not empty
     if (!empty($newPassword) || !empty($confirmPassword)) {
         if (empty($currentPassword)) {
-            echo "<script>alert('Current Password is required.');</script>";
+            $errorMessage = "Current Password is required.";
         } else {
             
             //check if the cookie is set
@@ -43,26 +48,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $storedPassword = $rowPassword['StudentPassword'];
 
                 if ($currentPassword != $storedPassword) {
-                    echo "<script>alert('Incorrect current password.');</script>";
+                    $errorMessage = "Incorrect current password.";
                 } else {
                     //check if newPassword and confirmPassword match
                     if ($newPassword != $confirmPassword) {
-                        echo "<script>alert('Password and Confirm Password do not match. Please enter again.');</script>";
+                        $errorMessage = "Password and Confirm Password do not match. Please enter again.";
                     } else {
-                        //update student table with new password
-                        $sqlUpdatePassword = "UPDATE student SET StudentPassword='$newPassword' WHERE StudentId='$studentId'";
-                
-                        $result = mysqli_query($connection, $sqlUpdatePassword);
-
-                        if ($result) {
-                            echo "<script>alert('Student password updated successfully');</script>";
+                        if (strlen($newPassword) < 8) {
+                            $errorMessage = "Password must be at least 8 characters long.";
                         } else {
-                            echo "<script>alert('Error updating student password: " . mysqli_error($connection) . "');</script>";
+                            //validate password at least one uppercase letter, one lowercase letter, one number and one special character
+                            if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/", $newPassword)) {
+                                $errorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.";
+                            } else {
+                                //update student table with new password
+                                $sqlUpdatePassword = "UPDATE student SET StudentPassword='$newPassword' WHERE StudentId='$studentId'";
+                        
+                                $result = mysqli_query($connection, $sqlUpdatePassword);
+
+                                if ($result) {
+                                    echo "<script>alert('Student password updated successfully');</script>";
+                                } else {
+                                    echo "<script>alert('Error updating student password: " . mysqli_error($connection) . "');</script>";
+                                }
+                            }
                         }
                     }
                 }
             } else {
-                die("Student record not found.");
+                echo "<script>alert('Error verifying current password.');</script>";
             }
         }
     } else {
@@ -107,6 +121,17 @@ mysqli_close($connection);
                                 <tr>
                                     <th colspan="2">Password</th>
                                 </tr>
+                                <?php
+                                    if ($errorMessage != "") {
+                                        echo "<tr>";
+                                        echo "<td colspan='2'>";
+                                        echo "<div class='alert alert-danger' role='alert'>";
+                                        echo $errorMessage;
+                                        echo "</div>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
+                                ?>
                                 <tr>
                                     <td>
                                         Current Password :<br>

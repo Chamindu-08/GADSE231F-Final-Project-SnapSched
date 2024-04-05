@@ -6,46 +6,61 @@
     if (!$connection) {
         echo "Connection failed";
     }
+    //error message
+    $errorMessage = "";
+
+    //initialize variables for error handling
+    $name = $email = $contact = $message = $date = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $contact = $_POST['contact'];
+        $date = $_POST['date'];
         $message = $_POST['message'];
 
-        //generate AppointmentId for new user (AppointmentId = A0001 like that)
-        $sql = "SELECT MAX(AppointmentId) AS max FROM appointment";
-        $result = mysqli_query($connection, $sql);
-        $row = mysqli_fetch_assoc($result);
-
-        if ($row['max'] == NULL) {      
-            $appointmentId = "A0001";
-        } else {        
-            $currentId = $row['max'];
-            $idNumber = substr($currentId, 1);
-            $newIdNumber = str_pad($idNumber + 1, strlen($idNumber), '0', STR_PAD_LEFT);
-            $appointmentId = 'A' . $newIdNumber;
+        //validate email last @gmail.com
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || substr($email, -10) !== "@gmail.com") {
+            $errorMessage = "Invalid email format or not a Gmail address.";
         }
 
-        //get current date
-        $date = date("Y-m-d");
-
-        $sql = "INSERT INTO appointment (AppointmentId, SenderName, Message, SenderContactNo, SenderEmail, AppointmentDate) 
-        VALUES ('$appointmentId', '$name', '$message', '$contact', '$email', '$date')";
-
-        // Execute the query
-        $result = mysqli_query($connection, $sql);
-
-        if ($result) {
-            // Message sent successfully
-            echo "<script>alert('Message sent successfully!');</script>";
-            echo "<script>window.location = 'HomePage.php';</script>";
-            exit();
-        } else {
-            // Message sending failed
-            echo "<script>alert('Message sending failed!');</script>";
+        //validate contact number
+        if (!preg_match("/^[0-9]{10}$/", $contact)) {
+            $errorMessage = "Invalid contact number";
         }
-        
+
+        //if there are no errors
+        if ($errorMessage == "") {
+            //generate AppointmentId for new user (AppointmentId = A0001 like that)
+            $sql = "SELECT MAX(AppointmentId) AS max FROM appointment";
+            $result = mysqli_query($connection, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            if ($row['max'] == NULL) {      
+                $appointmentId = "A0001";
+            } else {        
+                $currentId = $row['max'];
+                $idNumber = substr($currentId, 1);
+                $newIdNumber = str_pad($idNumber + 1, strlen($idNumber), '0', STR_PAD_LEFT);
+                $appointmentId = 'A' . $newIdNumber;
+            }
+
+            $sql = "INSERT INTO appointment (AppointmentId, SenderName, Message, SenderContactNo, SenderEmail, AppointmentDate) 
+            VALUES ('$appointmentId', '$name', '$message', '$contact', '$email', '$date')";
+
+            //execute the query
+            $result = mysqli_query($connection, $sql);
+
+            if ($result) {
+                //message sent successfully
+                echo "<script>alert('Message sent successfully!');</script>";
+                echo "<script>window.location = 'HomePage.php';</script>";
+                exit();
+            } else {
+                //message sending failed
+                echo "<script>alert('Message sending failed!');</script>";
+            }
+        }
     }
 ?>
 
@@ -76,14 +91,22 @@
                     <h1 class="heading">Contact Us</h1>
                 </div>
                 <div class="row">
-                    <h6 class="fontMontserrat">Get In Touch</h6>
-                    <p>We are here to help you. If you have any questions or need any information, feel free to contact us.</p>
+                    <div class="col-md-12">
+                        <h6 class="fontMontserrat">Get In Touch</h6>
+                        <p>We are here to help you. If you have any questions or need any information, feel free to contact us.</p>
+                    </div>
                 </div>
-                <!-- Responsive Form -->
                 <div class="row">
                     <div class="col-md-6">
                         <!-- Form -->
                         <h6 class="fontMontserrat">Send Us A Message</h6>
+                        <?php
+                            if ($errorMessage != "") {
+                                echo "<div class='alert alert-danger' role='alert'>";
+                                echo $errorMessage;
+                                echo "</div>";
+                            }
+                        ?>
                         <form action="#" method="post">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
@@ -98,6 +121,10 @@
                                 <input type="text" class="form-control" id="contact" name="contact" required>
                             </div>
                             <div class="mb-3">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="message" class="form-label">Message</label>
                                 <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
                             </div>
@@ -106,10 +133,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="row">
-                            <h6 class="fontMontserrat">Contact Information</h6>
-                            <img src="Images/contact.jpg" style="width: 100%;" alt="Contact Image">
-                            <h4 style="text-align: center;">Sujatha Vidyalaya</h4>
-                            <p style="text-align: center;">Rahula Road, Matara, Sri Lanka.<br><a href="#">principal@sujathavidyalaya.org</a> | <a href="#">it@sujathavidyalaya.org</a><br><a href="#">+94 - 412 222 313</a></p>
+                            <div class="col-md-12">
+                                <h6 class="fontMontserrat">Contact Information</h6>
+                                <img src="Images/contact.jpg" style="width: 100%;" alt="Contact Image">
+                                <h4 style="text-align: center;">Sujatha Vidyalaya</h4>
+                                <p style="text-align: center;">Rahula Road, Matara, Sri Lanka.<br><a href="mailto:principal@sujathavidyalaya.org">principal@sujathavidyalaya.org</a> | <a href="mailto:it@sujathavidyalaya.org">it@sujathavidyalaya.org</a><br><a href="tel:+94412222313">+94 - 412 222 313</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,6 +146,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="container mb-5">
     <div class="row">

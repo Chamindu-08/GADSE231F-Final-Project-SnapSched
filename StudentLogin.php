@@ -52,7 +52,10 @@ if (isset($_POST['textUserName']) && isset($_POST['textPassword'])) {
             setcookie('studentId', $studentId, time() + (30 * 60), "/"); 
 
             //set cookie for Grade (expire in 30 minutes)
-            setcookie('grade', $grade, time() + (30 * 60), "/"); 
+            setcookie('grade', $grade, time() + (30 * 60), "/");
+
+            //set cookie for StudentEmail (expire in 30 minutes)
+            setcookie('studentEmail', $row['StudentEmail'], time() + (30 * 60), "/");
 
             //redirect to student dashboard
             header("Location: StudentDashboard.php");

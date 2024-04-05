@@ -1,3 +1,51 @@
+<?php
+// Include database connection
+include 'DBConnection/DBConnection.php';
+
+// Check database connection
+if (!$connection) {
+    echo "<script>alert('Connection failed');</script>";
+}
+
+//set the cookie
+//check if the cookie is set
+if(isset($_COOKIE['studentId'])){
+    $studentId = $_COOKIE['studentId'];
+} else {
+    //if cookie is not set, redirect to login page
+    echo '<script>
+            var confirmMsg = confirm("Your session has timed out. Please log in again.");
+            if (confirmMsg) {
+                window.location.href = "StudentLogin.html";
+            }
+        </script>';
+    exit();
+}
+
+//initialize variables to store retrieved values
+$first_name = "";
+$last_name = "";
+
+// SQL query to retrieve admin information
+$sql = "SELECT FirstName, LastName FROM student WHERE StudentId = '$studentId'";
+
+$result = mysqli_query($connection, $sql);
+
+if ($result === false) {
+    die("Error executing the query: " . $connection->error);
+}
+
+if ($result->num_rows > 0) {
+    // output data of the first row (assuming only one admin is retrieved)
+    $row = $result->fetch_assoc();
+    $first_name = $row["FirstName"];
+    $last_name = $row["LastName"];
+}
+
+//close the connection
+mysqli_close($connection);
+?>
+
 <aside id="sidebar" class="js-sidebar">
     <!-- Sidebar -->
     <div class="h-100">
@@ -71,7 +119,7 @@
                         <img id="btnsearch" src="Images/search.png" alt="Search" style="width:15px;">
                     </a>
                 </form>
-                <label style="margin-left: 10px; margin-right: 10px;">Induwara D C I</label>
+                <label style="margin-left: 10px; margin-right: 10px;"><?php echo $first_name . ' ' . $last_name; ?></label>
                 <li class="nav-item dropdown">
                     <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                         <img src="Images/user-icon.png" class="avatar" alt="">

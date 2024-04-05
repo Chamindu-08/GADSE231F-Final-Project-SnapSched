@@ -7,17 +7,22 @@ if (!$connection) {
     echo "Connection failed";
 }
 
+//error message variable
+$errorMessage = "";
+
 //check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //retrieve form data
     $currentPassword = $_POST['currentPassword'];
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
+
+    $errorMessage = "";
     
     //check if newPassword or confirmPassword is empty and currentPassword is not empty
     if (!empty($newPassword) || !empty($confirmPassword)) {
         if (empty($currentPassword)) {
-            echo "<script>alert('Current Password is required.');</script>";
+            $errorMessage = "Current Password is required.";
         } else {
 
             //check if the cookie is set
@@ -43,26 +48,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $storedPassword = $rowPassword['TeacherPassword'];
 
                 if ($currentPassword != $storedPassword) {
-                    echo "<script>alert('Incorrect current password.');</script>";
+                    $errorMessage = "Incorrect current password.";
                 } else {
                     //check if newPassword and confirmPassword match
                     if ($newPassword != $confirmPassword) {
-                        echo "<script>alert('Password and Confirm Password do not match. Please enter again.');</script>";
+                        $errorMessage = "Password and Confirm Password do not match. Please enter again.";
                     } else {
-                        //update student table with new password
-                        $sqlUpdatePassword = "UPDATE teacher SET TeacherPassword='$newPassword' WHERE TeacherEmail='$teacherEmail'";
-                
-                        $result = mysqli_query($connection, $sqlUpdatePassword);
-
-                        if ($result) {
-                            echo "<script>alert('Student password updated successfully');</script>";
+                        //validate new password
+                        if (strlen($newPassword) < 8) {
+                            $errorMessage = "Password must be at least 8 characters long.";
                         } else {
-                            echo "<script>alert('Error updating student password: " . mysqli_error($connection) . "');</script>";
+                            //validate new password with at least one uppercase letter, one lowercase letter, one number and one special character
+                            if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $newPassword)) {
+                                $errorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.";
+                            } else {
+                                //update teacher table with new password
+                                $sqlUpdatePassword = "UPDATE teacher SET TeacherPassword='$newPassword' WHERE TeacherEmail='$teacherEmail'";
+                        
+                                $result = mysqli_query($connection, $sqlUpdatePassword);
+
+                                if ($result) {
+                                    echo "<script>alert('Student password updated successfully');</script>";
+                                } else {
+                                    echo "<script>alert('Error updating student password: " . mysqli_error($connection) . "');</script>";
+                                }
+                            }
                         }
                     }
                 }
             } else {
-                die("Student record not found.");
+                echo "<script>alert('Teacher record not found.');</script>";
             }
         }
     } else {
@@ -90,7 +105,7 @@ mysqli_close($connection);
 </head>
 <body>
     <div class="wrapper">
-        <?php include 'Includes/DashSideNav.php'; ?>
+        <?php include 'Includes/TeacherSideNav.php'; ?>
             
         <main class="content px-3 py-2">
             <div class="container-fluid">
@@ -101,6 +116,11 @@ mysqli_close($connection);
                             Account
                         </h4>
                     </div>
+                    <?php
+                        if (!empty($errorMessage)) {
+                            echo '<div class="alert alert-danger" role="alert">' . $errorMessage . '</div>';
+                        }
+                    ?>
                     <div class="card-body">
                         <form name="studentProUp" action="#" method="post">
                             <table class="cpTable">

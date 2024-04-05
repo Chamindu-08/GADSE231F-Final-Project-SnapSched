@@ -95,13 +95,13 @@ if(isset($_POST["date"])) {
                                     <tr>
                                         <td>
                                             Date : </br>
-                                            <input type="date" class="form-control" name="date">
+                                            <input type="date" class="form-control" name="date" required>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             Reason :
-                                            <textarea class="form-control" rows="10" name="reason"></textarea>
+                                            <textarea class="form-control" rows="10" name="reason" required></textarea>
                                         </td>
                                     </tr>
                                     <tr>
