@@ -16,16 +16,12 @@
 
 <?php include 'Includes/NavBar.php'; ?>
 
-  <div class="container-fluid bannerImg">
-    <img src="images/administration_slider.jpg">
-  </div>
-
   <!-- ABOUNT PRINCIPLE -->
   <div class="container mt-5">
       <div class="card" style="width:100%; padding-top: 50px; padding-bottom: 50px;">
           <div class="row no-gutters">
               <div class="col-md-4">
-                  <img src="images/user.jpg" class="card-img" alt="Card image" style="width:100%">
+                  <img src="Images/Principle.jpg" class="card-img" alt="Card image" style="width:100%">
               </div>
               <div class="col-md-8">
                   <div class="card-body">
@@ -46,7 +42,7 @@
       <div class="mt-3 row">
           <div class="col">
               <div class="card hvr-grow" style="width: auto;">
-                  <img class="card-img-top" src="Images/user.jpg" alt="Card image" style="width:100%">
+                  <img class="card-img-top" src="Images/user2.png" alt="Card image" style="width:100%">
                   <div class="card-body">
                     <h6 class="card-title h6name">Mrs. Thamara Hewa Walgama</h6>
                     <p class="card-text paraFont1">Deputy Principal</p>
@@ -55,7 +51,7 @@
           </div>
           <div class="col">
               <div class="card hvr-grow" style="width: auto;">
-                  <img class="card-img-top" src="Images/user.jpg" alt="Card image" style="width:100%">
+                  <img class="card-img-top" src="Images/user2.png" alt="Card image" style="width:100%">
                   <div class="card-body">
                     <h6 class="card-title h6name">Mrs. P.K. Nanayakkara</h6>
                     <p class="card-text paraFont1">Deputy Principal</p>
@@ -64,7 +60,7 @@
           </div>
           <div class="col">
               <div class="card hvr-grow" style="width: auto;">
-                  <img class="card-img-top" src="Images/user.jpg" alt="Card image" style="width:100%">
+                  <img class="card-img-top" src="Images/user2.png" alt="Card image" style="width:100%">
                   <div class="card-body">
                     <h6 class="card-title h6name">Mrs. Geethika Walliwala</h6>
                     <p class="card-text paraFont1">Deputy Principal</p>
@@ -73,7 +69,7 @@
           </div>
           <div class="col">
               <div class="card hvr-grow" style="width: auto;">
-                  <img class="card-img-top" src="Images/user.jpg" alt="Card image" style="width:100%">
+                  <img class="card-img-top" src="Images/user2.png" alt="Card image" style="width:100%">
                   <div class="card-body">
                     <h6 class="card-title h6name">Mrs. K. W. Manel</h6>
                     <p class="card-text paraFont1">Deputy Principal</p>
@@ -82,7 +78,7 @@
           </div>
           <div class="col">
               <div class="card hvr-grow" style="width: auto;">
-                  <img class="card-img-top" src="Images/user.jpg" alt="Card image" style="width:100%">
+                  <img class="card-img-top" src="Images/user2.png" alt="Card image" style="width:100%">
                   <div class="card-body">
                     <h6 class="card-title h6name">Mrs. Punya Erandathi Mudalige</h6>
                     <p class="card-text paraFont1">Primary Principle</p>

@@ -37,32 +37,53 @@
 
             //check if exactly one row is returned
             if (mysqli_num_rows($result) == 1) {
-                //fetch the row
-                $row = mysqli_fetch_assoc($result);
-                
-                //store user details in session variables
-                $_SESSION['userName'] = $row['TeacherEmail'];
-                $_SESSION['password'] = $password;
 
-                //fetch the student ID from the row
-                $teacherEmail = $row['TeacherEmail'];
-                $teacherId = $row['TeacherId'];
+                //check aviable user details
+                $sql = "SELECT * FROM teacher WHERE TeacherEmail='$userName' AND TeacherStatus='Available'";
 
-                //set cookie for StudentId (expire in 30 minutes)
-                setcookie('teacherEmail', $teacherEmail, time() + (30 * 60), "/");
-                setcookie('teacherId', $teacherId, time() + (30 * 60), "/");
+                //execute the query
+                $result = mysqli_query($connection, $sql);
 
-                //redirect to student dashboard
-                header("Location: TeacherDashboard.php");
-                exit();
+                if (mysqli_num_rows($result) == 1) {
+                    //fetch the row
+                    $row = mysqli_fetch_assoc($result);
+
+                    //store user details in session variables
+                    $_SESSION['userName'] = $row['TeacherEmail'];
+                    $_SESSION['password'] = $password;
+
+                    //fetch the student ID from the row
+                    $teacherEmail = $row['TeacherEmail'];
+                    $teacherId = $row['TeacherId'];
+
+                    //set cookie for StudentId (expire in 30 minutes)
+                    setcookie('teacherEmail', $teacherEmail, time() + (30 * 60), "/");
+                    setcookie('teacherId', $teacherId, time() + (30 * 60), "/");
+
+                    //redirect to student dashboard
+                    header("Location: TeacherDashboard.php");
+                    exit();
+                } else {
+                    //if no or more than one row is returned, display error
+                    echo "<script>alert('Your access is denied. Please contact the administrator.');</script>";
+
+                    //redirect to login page
+                    echo "<script>window.location = 'TeacherLogin.html';</script>";
+                }
             } else {
                 //if no or more than one row is returned, display error
-                echo "Invalid username or password.";
+                echo "<script>alert('Invalid username or password. Please try again.');</script>";
+
+                //redirect to login page
+                echo "<script>window.location = 'TeacherLogin.html';</script>";
             }
         }
     } else {
         //if username or password is not provided via POST request, display error
         echo "Username and password are required fields.";
+
+        //redirect to login page
+        echo "<script>window.location = 'TeacherLogin.html';</script>";
     }
 
     //close the database connection

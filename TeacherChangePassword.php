@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         
                                 $result = mysqli_query($connection, $sqlUpdatePassword);
 
-                                if ($result) {
+                                if ($result == true) {
                                     echo "<script>alert('Student password updated successfully');</script>";
                                 } else {
                                     echo "<script>alert('Error updating student password: " . mysqli_error($connection) . "');</script>";

@@ -108,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $errorMessage = "Invalid NIC.";
         }
 
-
         // Validate NIC uniqueness
         $sqlNic = "SELECT NIC FROM teacher WHERE NIC='$nic'";
         $resultNic = mysqli_query($connection, $sqlNic);

@@ -84,8 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,11 +111,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
                                     <div class="p-3 m-1">
                                         <h4>Student marks</h4>
                                         <form name="formYearSearch" method="post" action="#">
-                                            <table>
-                                                <tr>
-                                                    <td>Grade :</td>
-                                                    <td>
-                                                        <?php
+                                            <div class="form-group">
+                                                <label for="gradeSelect">Grade</label>
+                                                <select class="form-select" name="gradeSelect" id="gradeSelect" required>
+                                                <?php
                                                         //database connection
                                                         include 'DBConnection/DBConnection.php';
     
@@ -129,14 +126,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
                                                         $result = mysqli_query($connection, $sql);
     
                                                         if ($result) {
-                                                            echo '<select id="gradeSelect" class="grade-select-dropdown" name="gradeSelect">';
-                                                            
                                                             //fetch data from the database
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 echo '<option value="' . $row['Grade'] . '">' . $row['Grade'] . '</option>';
                                                             }
-                                                            
-                                                            echo '</select>';
                                                             
                                                             mysqli_free_result($result);
                                                         } else {
@@ -146,9 +139,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
                                                         //close the database connection
                                                         mysqli_close($connection);
                                                         ?>
-                                                    </td>
-                                                    <td>Subject :</td>
-                                                    <td>
+                                                </select>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <label for="subjectSelect">Subject</label>
+                                                <select class="form-select" name="subjectSelect" id="subjectSelect" required>
                                                     <?php
                                                     //database connection
                                                     include 'DBConnection/DBConnection.php';
@@ -162,14 +157,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
                                                     $result = mysqli_query($connection, $sql);
 
                                                     if ($result) {
-                                                        echo '<select id="subjectSelect" class="subject-select-dropdown" name="subjectSelect">';
-                                                        
                                                         //fetch data from the database
                                                         while ($row = mysqli_fetch_assoc($result)) {
                                                             echo '<option value="' . $row['SubjectName'] . '">' . $row['SubjectName'] . '</option>';
                                                         }
-                                                        
-                                                        echo '</select>';
                                                         
                                                         mysqli_free_result($result);
                                                     } else {
@@ -179,19 +170,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
                                                     //close the database connection
                                                     mysqli_close($connection);
                                                     ?>
-                                                </td>
-                                                    <td>Term :</td>
-                                                    <td><select id="termSelect" class="term-select-dropdown" name="termSelect">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                      </select>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btnStyle1 mx-2" type="submit">Search</button>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                </select>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <label for="termSelect">Term</label>
+                                                <select class="form-select" name="termSelect" id="termSelect" required>
+                                                    <option value="1">1st Term</option>
+                                                    <option value="2">2nd Term</option>
+                                                    <option value="3">3rd Term</option>
+                                                </select>
+                                            </div>
+
+                                            <button class="btnStyle1 mx-2" type="submit">Search</button>
                                         </form>
                                     </div>
                                 </div>
@@ -229,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveMarks'])) {
                                 }
 
                                 //fetch student data based on selected criteria
-                                $sql = "SELECT * FROM student WHERE Grade = '$selectedGrade'";
+                                $sql = "SELECT * FROM student WHERE Grade = '$selectedGrade' AND StudentStatus = 'yes'";
                                 $result = mysqli_query($connection, $sql);
 
                                 //display student data

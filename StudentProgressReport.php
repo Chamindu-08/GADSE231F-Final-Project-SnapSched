@@ -25,11 +25,10 @@
                                     <div class="p-3 m-1">
                                         <h4>School Progress Report</h4>
                                         <form name="formYearSearch" method="post" action="#">
-                                            <table>
-                                                <tr>
-                                                    <td>Year</td>
-                                                    <td>
-                                                        <?php
+                                            <div class="form-group">
+                                                <label for="year">Select year</label>
+                                                <select class="form-select" name="year" id="year">
+                                                    <?php
                                                         //database connection
                                                         include 'DBConnection/DBConnection.php';
 
@@ -42,14 +41,11 @@
                                                         $result = mysqli_query($connection, $sql);
 
                                                         if ($result) {
-                                                            echo '<select id="gradeSelect" class="grade-select-dropdown" name="year">';
                                                             
                                                             //display year options in a dropdown
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 echo '<option value="' . $row['MarkOfYear'] . '">' . $row['MarkOfYear'] . '</option>';
                                                             }
-                                                            
-                                                            echo '</select>';
                                                             
                                                             mysqli_free_result($result);
                                                         } else {
@@ -58,13 +54,9 @@
 
                                                         //close the database connection
                                                         mysqli_close($connection);
-                                                        ?>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btnStyle1 mx-2" type="submit" name="submit">Search</button>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                    ?>
+                                                </select>
+                                            <button class="btnStyle1 mx-2" type="submit" name="submit">Search</button>
                                         </form>
                                     </div>
                                 </div>

@@ -30,6 +30,15 @@ if(isset($_POST["date"])) {
             exit();
         }
 
+        //check if the teacher is already absent on the given date
+        $checkAbsentQuery = "SELECT AbsentId FROM absenteeism WHERE TeacherId = '$TeacherId' AND AbsentDate = '$Date'";
+        $result = mysqli_query($connection, $checkAbsentQuery);
+
+        if (mysqli_num_rows($result) > 0) {
+            echo "<script>alert('You are already absent on this date.');</script>";
+            echo "<script>window.location.href = 'TeacherDashboard.php';</script>";
+        }
+
         //get the latest AbsentId from the database to determine the next ID
         $latestAbsentIdQuery = "SELECT AbsentId FROM absenteeism ORDER BY AbsentId DESC LIMIT 1";
         $result = mysqli_query($connection, $latestAbsentIdQuery);

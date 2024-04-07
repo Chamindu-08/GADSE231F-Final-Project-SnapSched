@@ -134,10 +134,10 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12">
-                                <h6 class="fontMontserrat">Contact Information</h6>
+                                <h6 class="fontMontserrat">INDASARA MAHA Vidyalaya</h6>
                                 <img src="Images/contact.jpg" style="width: 100%;" alt="Contact Image">
                                 <h4 style="text-align: center;">Sujatha Vidyalaya</h4>
-                                <p style="text-align: center;">Rahula Road, Matara, Sri Lanka.<br><a href="mailto:principal@sujathavidyalaya.org">principal@sujathavidyalaya.org</a> | <a href="mailto:it@sujathavidyalaya.org">it@sujathavidyalaya.org</a><br><a href="tel:+94412222313">+94 - 412 222 313</a></p>
+                                <p style="text-align: center;">Talabara, Matara, Sri Lanka.<br><a href="mailto:principal@sujathavidyalaya.org">principal@indasaramahavidyalaya.org</a> | <a href="mailto:it@sujathavidyalaya.org">it@indasaramahavidyalaya.org</a><br><a href="tel:+94412222313">+94 - 412 222 313</a></p>
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="container mb-5">
     <div class="row">

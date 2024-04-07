@@ -11,11 +11,11 @@
             </div>
             <div class="footer-col">
                 <h5>Useful Links</h5>
-                <a class="footerLinks" href="Homepage.php">Home</a><br>
-                <a class="footerLinks" href="AboutUS.php">About School</a><br>
-                <a class="footerLinks" href="Administration.php">Administration</a><br>
-                <a class="footerLinks" href="Academic.php">Gallery</a><br>
-                <a class="footerLinks" href="ContactUS.php">Contact US</a>
+                <a class="footerLinks" href="HomePage.php">Home</a><br>
+                <a class="footerLinks" href="HomeAboutSchool.php">About School</a><br>
+                <a class="footerLinks" href="HomeAdministration.php">Administration</a><br>
+                <a class="footerLinks" href="HomeGallery.php">Gallery</a><br>
+                <a class="footerLinks" href="HomeContactUS.php">Contact US</a>
             </div>
             <div class="footer-col">
                 <h5>Our Gallery</h5>

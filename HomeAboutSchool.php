@@ -15,10 +15,6 @@
 </head>
     
     <?php include 'Includes/NavBar.php'; ?>
-
-    <div class="container-fluid bannerImg">
-      <img src="images/about_slider.jpg">
-    </div>
     
     <div class="container">
       <h3 class="fontMontserrat" style="padding-top: 20px; padding-bottom: 20px;">Our Beginning</h3>
@@ -58,7 +54,7 @@
           </ul>
         </div>
         <div class="col">
-          <img src="images/about_banner.jpg">
+          <img src="Images/School16.jpg">
         </div>
       </div>
     </div>
@@ -66,22 +62,14 @@
     <div class="mt-5 container-fluid detailsBox">
       <div class="row">
         <div class="col-6">
-          <img src="images/about_01.jpg" style="width: 100%;">
-        </div>
-        <div class="col-6">
-          <img src="Images/gallery_06L" style="width: 500px; padding-bottom: 10px;">
+          <img src="Images/school.png" style="width: 10%; padding-bottom: 10px;">
           <h5 style="padding-bottom: 10px;">Did Noble Service</h5>
           <p style="padding-bottom: 10px;">With the courage and strength of early students it wasn't a trouble to win the obstacles. As a result of that, in 1942 Thalaramba Indasara vidyalaya became a government school. We should specially mention about all Buddhists who supported to start and lead the school as external parties, such as Rev. Thalaramba Indasara. Now in Thalaramba Sri Indasara Maha Vidyalaya there are about 200 students and 23 in academic staff with 12 in non-academic staff.</p>
         </div>
-      </div>
-      <div class="row">
         <div class="col-6" style="padding: 20px;">
-          <img src="Images/history_03" style="width: 500px; padding-bottom: 10px;">
+          <img src="Images/primary.png" style="width: 10%; padding-bottom: 10px;">
           <h5 style="padding-bottom: 10px;">Thalaramba Sri Indasara Primary</h5>
           <p style="padding-bottom: 10px;">Back in 2012, Thalaramba Indasara Vidyalaya was converted into a primary school with the dedication of the principal and others.</p>
-        </div>
-        <div class="col-6">
-          <img src="images/about_02.jpg" style="width: 100%;">
         </div>
       </div>
     </div>

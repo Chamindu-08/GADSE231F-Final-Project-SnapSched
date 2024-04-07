@@ -41,11 +41,10 @@ if (isset($_COOKIE['teacherId'])) {
                                     <div class="p-3 m-1">
                                         <h4>Student Time Table</h4>
                                         <form name="formYearSearch" method="post" action="#">
-                                            <table>
-                                                <tr>
-                                                    <td>Grade</td>
-                                                    <td>
-                                                        <?php
+                                            <div class="input-group mb-3">
+                                                <label class="input-group-text" for="grade">Grade</label>
+                                                <select class="form-select" id="grade" name="grade">
+                                                    <?php
                                                         //database connection
                                                         include 'DBConnection/DBConnection.php';
 
@@ -58,13 +57,10 @@ if (isset($_COOKIE['teacherId'])) {
                                                         $result = mysqli_query($connection, $sql);
 
                                                         if ($result) {
-                                                            echo '<select id="gradeSelect" class="grade-select-dropdown" name="grade">';
                                                             
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 echo '<option value="' . $row['Grade'] . '">' . $row['Grade'] . '</option>';
                                                             }
-                                                            
-                                                            echo '</select>';
                                                             
                                                             mysqli_free_result($result);
                                                         } else {
@@ -73,13 +69,10 @@ if (isset($_COOKIE['teacherId'])) {
 
                                                         //close the database connection
                                                         mysqli_close($connection);
-                                                        ?>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btnStyle1 mx-2" type="submit" name="submit">Search</button>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <button class="btnStyle1 mx-2" type="submit" name="submit">Search</button>
                                         </form>
                                     </div>
                                 </div>
